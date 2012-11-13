@@ -1,0 +1,4 @@
+IGIPortalWnodes
+===============
+
+Portlet for wnodes
