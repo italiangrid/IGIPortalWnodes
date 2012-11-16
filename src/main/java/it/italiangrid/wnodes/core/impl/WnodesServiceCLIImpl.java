@@ -8,22 +8,20 @@ import org.slf4j.LoggerFactory;
 
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.model.VirtualMachine;
+import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
-public class WnodesServiceImpl implements WnodesService {
-	
+public class WnodesServiceCLIImpl implements WnodesService {
+
 	private static final Logger log = LoggerFactory
-			.getLogger(WnodesServiceImpl.class);
+			.getLogger(WnodesServiceCLIImpl.class);
 	
-	public WnodesServiceImpl(){
+	public WnodesServiceCLIImpl(){
 		
 	}
 
 	public List<VirtualMachine> getVirtualMachines(long userId) {
-		List<VirtualMachine> vms = new ArrayList<VirtualMachine>();
-		
-		log.info("Gettign all the user's virtual machines.");
-		
-		return vms;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public VirtualMachine getVirtualMachine(long userId, String uuid) {
@@ -31,7 +29,7 @@ public class WnodesServiceImpl implements WnodesService {
 		return null;
 	}
 
-	public String createVirtualMachines(long userId, VirtualMachine vm) {
+	public String createVirtualMachines(long userId, VirtualMachineCreation vm) {
 		// TODO Auto-generated method stub
 		return null;
 	}

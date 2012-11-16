@@ -10,19 +10,25 @@ public class VirtualMachine {
 	private String uuid;
 
 	/**
+	 * @param uuid 
 	 * @param hostname
 	 * @param architecture
 	 * @param cores
 	 * @param memory
 	 * @param status
 	 */
-	public VirtualMachine(String hostname, String architecture, String cores,
+	public VirtualMachine(String uuid, String hostname, String architecture, String cores,
 			String memory, String status) {
+		this.uuid = uuid;
 		this.hostname = hostname;
 		this.architecture = architecture;
 		this.cores = cores;
 		this.memory = memory;
 		this.status = status;
+	}
+	
+	public VirtualMachine(){
+		
 	}
 
 	public String getHostname() {
