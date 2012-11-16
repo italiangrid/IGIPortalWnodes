@@ -33,8 +33,6 @@
 
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-	<bean id="myValidator"
-		class="it.italiangrid.wnodes.utils.MyValidator" />
 		
 	<bean
 		class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter">
