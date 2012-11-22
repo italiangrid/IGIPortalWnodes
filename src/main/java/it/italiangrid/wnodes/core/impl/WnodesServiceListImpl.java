@@ -17,7 +17,7 @@ public class WnodesServiceListImpl implements WnodesService {
 			.getLogger(WnodesServiceListImpl.class);
 
 	private static List<VirtualMachine> vms = new ArrayList<VirtualMachine>();
-//	private static int hostnameCount = 0;
+	private static int hostnameCount = 2;
 
 	public WnodesServiceListImpl() {
 
@@ -49,7 +49,7 @@ public class WnodesServiceListImpl implements WnodesService {
 
 		VirtualMachine vm = new VirtualMachine(uuid, getHostname(),
 				getArchFromVmc(vmc), getSizeFromVmc(vmc), getSizeFromVmc(vmc),
-				"ACTIVE");
+				"ACTIVE", "1.2");
 
 		vms.add(vm);
 		return uuid;
@@ -71,9 +71,9 @@ public class WnodesServiceListImpl implements WnodesService {
 
 	private String getHostname() {
 //		String hostname = "wnodesvm" + hostnameCount + ".cnaf.infn.it";
-//		hostnameCount++;
+		hostnameCount= hostnameCount==2?4:2;
 //		return hostname;
-		return "gridlab02.cnaf.infn.it";
+		return "gridlab0"+hostnameCount+".cnaf.infn.it";
 //		return null;
 	}
 

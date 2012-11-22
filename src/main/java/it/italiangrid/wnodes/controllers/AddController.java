@@ -3,10 +3,11 @@ package it.italiangrid.wnodes.controllers;
 import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesInfoService;
+import it.italiangrid.wnodes.core.impl.WnodesInfoServiceCLIImpl;
 import it.italiangrid.wnodes.core.impl.WnodesInfoServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
-import it.italiangrid.wnodes.utils.ProxyServiceUtil;
-import it.italiangrid.wnodes.utils.impl.ProxyServiceUtilImpl;
+import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
 import java.util.List;
 
@@ -51,14 +52,20 @@ public class AddController {
 	}
 
 	@ModelAttribute("tags")
-	public List<String> getTags() {
-		WnodesInfoService infoService = new WnodesInfoServiceListImpl();
+	public List<String> getTags(RenderRequest request) {
+		User user = (User) request.getAttribute(WebKeys.USER);
+		WnodesInfoService infoService;
+		//if (user != null)
+			infoService = new WnodesInfoServiceCLIImpl(Long.toString(user.getUserId()));
 		return infoService.getTags();
 	}
 
 	@ModelAttribute("sizes")
-	public List<String> getCores() {
-		WnodesInfoService infoService = new WnodesInfoServiceListImpl();
+	public List<String> getSizes(RenderRequest request) {
+		User user = (User) request.getAttribute(WebKeys.USER);
+		WnodesInfoService infoService;
+		//if (user != null)
+			infoService = new WnodesInfoServiceCLIImpl(Long.toString(user.getUserId()));
 		return infoService.getSizes();
 	}
 	
@@ -74,8 +81,8 @@ public class AddController {
 			
 			if(user!=null){
 				log.info("Getting active proxies for user {}.",user.getUserId());
-				ProxyServiceUtil proxyService = new ProxyServiceUtilImpl();
-				return proxyService.getActiveProxy(user.getUserId());
+				UserServiceUtil proxyService = new UserServiceUtilImpl(user.getUserId());
+				return proxyService.getActiveProxy();
 			}
 			
 		} catch (PortalException e) {

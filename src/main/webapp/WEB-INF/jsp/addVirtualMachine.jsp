@@ -35,10 +35,11 @@ CSS temporaneo da spostare poi in main css
 	<div id="presentationWnodes">Hi ${userInfo.firstName }
 		${userInfo.lastName }</div>
 	<div id="contentWnodes">
-
+		<liferay-ui:success key="vm-created" message="vm-created" />
 		<liferay-ui:error key="portal-exception" message="exception" />
 		<liferay-ui:error key="system-exception" message="exception" />
 		<liferay-ui:error key="vm-not-created" message="vm-not-created" />
+		<liferay-ui:error key="vo-not-supported" message="vo-not-supported" />
 
 		<portlet:actionURL var="addUrl">
 			<portlet:param name="myaction" value="addVirtualMachine" />
@@ -97,7 +98,7 @@ CSS temporaneo da spostare poi in main css
 				<c:if test="${fn:length(vos) > 0 }">
 					<aui:button-row>
 						<aui:button type="submit" value="Create Virtual Machine" />
-						<aui:button type="cancel" value="Back" onClick="location.href='${backUrl}';"></aui:button>
+						<aui:button type="cancel" value="View List" onClick="location.href='${backUrl}';"></aui:button>
 					</aui:button-row>
 				</c:if>
 				

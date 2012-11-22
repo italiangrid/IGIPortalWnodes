@@ -8,6 +8,7 @@ public class VirtualMachine {
 	private String memory;
 	private String status;
 	private String uuid;
+	private String speed;
 
 	/**
 	 * @param uuid 
@@ -18,13 +19,14 @@ public class VirtualMachine {
 	 * @param status
 	 */
 	public VirtualMachine(String uuid, String hostname, String architecture, String cores,
-			String memory, String status) {
+			String memory, String status, String speed) {
 		this.uuid = uuid;
 		this.hostname = hostname;
 		this.architecture = architecture;
 		this.cores = cores;
 		this.memory = memory;
 		this.status = status;
+		this.speed = speed;
 	}
 	
 	public VirtualMachine(){
@@ -81,11 +83,13 @@ public class VirtualMachine {
 	
 	public String toString(){
 		String results;
-		results = "\nHostname: \t\t" + this.hostname;
-		results += "\nArchitetture: \t" + this.architecture;
-		results += "\nCores: \t\t" + this.cores;
-		results += "\nMemory: \t\t" + this.memory + "GB";
-		results += "\nStatus: \t\t" + this.status.toUpperCase() + "\n\n";
+		results = "\nUuid:\t\t" + this.uuid; 
+		results += "\nHostname:\t" + this.hostname;
+		results += "\nArchitetture:\t" + this.architecture;
+		results += "\nCores:\t\t" + this.cores;
+		results += "\nMemory:\t\t" + this.memory + "GB";
+		results += "\nSpeed:\t\t" + this.speed;
+		results += "\nStatus:\t\t" + this.status.toUpperCase() + "\n\n";
 		return results;
 	}
 	

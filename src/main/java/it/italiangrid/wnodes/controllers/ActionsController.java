@@ -1,6 +1,7 @@
 package it.italiangrid.wnodes.controllers;
 
 import it.italiangrid.wnodes.core.WnodesService;
+import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
 import it.italiangrid.wnodes.core.impl.WnodesServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
@@ -34,24 +35,28 @@ public class ActionsController {
 	@ActionMapping(params = "myaction=addVirtualMachine")
 	public void addVirtualMachine(@ModelAttribute VirtualMachineCreation vm,
 			ActionRequest request, ActionResponse response, SessionStatus status) {
-		WnodesService service = new WnodesServiceListImpl();
+		WnodesService service = new WnodesServiceCLIImpl();
 
 		try {
 			User user = PortalUtil.getUser(request);
 			String uuid = service.createVirtualMachines(user.getUserId(), vm);
-
+			
 			if (uuid != null) {
-				log.info("Virtual machines {}. created for user {}.", uuid,
-						user.getUserId());
-				SessionMessages.add(request, "vm-created");
-				response.setRenderParameter("myaction", "showList");
-				status.setComplete();
-				return;
-			} else {
-				log.info("Virtual machines not created for user {}.",
-						user.getUserId());
-				SessionErrors.add(request, "vm-not-created");
+				if(uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")){
+					log.info("Virtual machines {}. created for user {}.", uuid,
+							user.getUserId());
+					SessionMessages.add(request, "vm-created");
+					//response.setRenderParameter("myaction", "showList");
+					response.setRenderParameter("myaction", "showAddVirtualMachine");
+					status.setComplete();
+					return;
+				}else{
+					SessionErrors.add(request, "vo-not-supported");
+				}
 			}
+			log.info("Virtual machines not created for user {}.",
+					user.getUserId());
+			SessionErrors.add(request, "vm-not-created");
 
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
@@ -74,7 +79,7 @@ public class ActionsController {
 	@ActionMapping(params = "myaction=deleteVirtualMachine")
 	public void removeVirtualMachine(@RequestParam String uuid, ActionRequest request,
 			ActionResponse response, SessionStatus status) {
-		WnodesService service = new WnodesServiceListImpl();
+		WnodesService service = new WnodesServiceCLIImpl();
 		
 		try {
 			User user = PortalUtil.getUser(request);
@@ -103,5 +108,41 @@ public class ActionsController {
 		response.setRenderParameter("myaction", "showList");
 	}
 
+	
+	@ActionMapping(params = "myaction=deleteMultipleVirtualMachine")
+	public void removemultipleVirtualMachine(@RequestParam String[] vmToDel, ActionRequest request,
+			ActionResponse response, SessionStatus status) {
+		WnodesService service = new WnodesServiceCLIImpl();
+		
+		try {
+			User user = PortalUtil.getUser(request);
+			for(String uuid : vmToDel){
+				
+				log.info("VM to delete: {}.",uuid);
+				if(service.deleteVirtualMachines(user.getUserId(), uuid)){
+					log.info("Deleted Virtual Machine {} of the user {}.",user.getUserId(),uuid);
+					SessionMessages.add(request, "vm-deleted");
+				}else{
+					log.info("VM not deleted: {}.",uuid);
+					SessionErrors.add(request, "vm-not-deleted");
+					
+				}
+			}
+		} catch (PortalException e) {
+			log.info("Portal exception: {}.", e.getMessage());
+			SessionErrors.add(request, "portal-exception");
+			e.printStackTrace();
+		} catch (SystemException e) {
+			log.info("System exception: {}.", e.getMessage());
+			SessionErrors.add(request, "system-exception");
+			e.printStackTrace();
+		} catch (Exception e){
+			log.info("Exception: {}.", e.getMessage());
+			SessionErrors.add(request, "system-exception");
+			e.printStackTrace();
+		}
+		
+		response.setRenderParameter("myaction", "showList");
+	}
 
 }
