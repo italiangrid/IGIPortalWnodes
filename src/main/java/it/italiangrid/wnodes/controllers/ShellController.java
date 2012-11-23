@@ -22,35 +22,35 @@ import com.liferay.portal.model.User;
 @Controller("shellController")
 @RequestMapping(value = "VIEW")
 public class ShellController {
-	
+
 	private static final Logger log = LoggerFactory
 			.getLogger(ShellController.class);
-	
+
 	@Autowired
 	private UserInfoService userInfoService;
-	
-	@RenderMapping(params="myaction=viewVirtualMachine")
+
+	@RenderMapping(params = "myaction=viewVirtualMachine")
 	public String showHomePage(RenderRequest request) {
 		log.info("Shell Controller");
-		
+
 		return "myshell";
 	}
-	
+
 	@ModelAttribute("userInfo")
 	public UserInfo getUserInfo(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
-		if (user != null){
+		if (user != null) {
 			return userInfoService.findByUsername(user.getScreenName());
 		}
 		return null;
 	}
-	
+
 	@ModelAttribute("host")
 	public String getHostname(@RequestParam String uuid, RenderRequest request) {
 		log.info("Getting specific virtual machines of the user");
 		User user = (User) request.getAttribute(WebKeys.USER);
 		long userId;
-		
+
 		if (user != null)
 			userId = user.getUserId();
 		else

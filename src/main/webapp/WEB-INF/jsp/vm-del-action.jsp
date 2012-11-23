@@ -12,7 +12,7 @@
 
 	<portlet:actionURL var="deleteURL">
 		<portlet:param name="myaction" value="deleteVirtualMachine" />
-		<portlet:param name="uuid" value="<%=primKey %>" />
+		<portlet:param name="uuid" value="<%=primKey%>" />
 	</portlet:actionURL>
 	<liferay-ui:icon-delete url="${deleteURL}" />
 

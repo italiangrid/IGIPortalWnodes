@@ -5,9 +5,6 @@
 		${userInfo.lastName }</div>
 	<div id="contentWnodes">
 	
-		<!-- <iframe
-			src="https://flyback.cnaf.infn.it:8443/webtty/webtty.html?user=<%=((User) request.getAttribute(WebKeys.USER)).getUserId()%>&host=${host }"
-			frameborder="no" width="100%" height="600"></iframe> -->
 		<script type="text/javascript">
 		
 			create('${host }', '<%=((User) request.getAttribute(WebKeys.USER)).getUserId()%>');

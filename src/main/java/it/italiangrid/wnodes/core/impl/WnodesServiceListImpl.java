@@ -70,11 +70,11 @@ public class WnodesServiceListImpl implements WnodesService {
 	}
 
 	private String getHostname() {
-//		String hostname = "wnodesvm" + hostnameCount + ".cnaf.infn.it";
-		hostnameCount= hostnameCount==2?4:2;
-//		return hostname;
-		return "gridlab0"+hostnameCount+".cnaf.infn.it";
-//		return null;
+		// String hostname = "wnodesvm" + hostnameCount + ".cnaf.infn.it";
+		hostnameCount = hostnameCount == 2 ? 4 : 2;
+		// return hostname;
+		return "gridlab0" + hostnameCount + ".cnaf.infn.it";
+		// return null;
 	}
 
 	private String getSizeFromVmc(VirtualMachineCreation vmc) {

@@ -1,7 +1,7 @@
 package it.italiangrid.wnodes.model;
 
 public class VirtualMachine {
-	
+
 	private String hostname;
 	private String architecture;
 	private String cores;
@@ -11,15 +11,15 @@ public class VirtualMachine {
 	private String speed;
 
 	/**
-	 * @param uuid 
+	 * @param uuid
 	 * @param hostname
 	 * @param architecture
 	 * @param cores
 	 * @param memory
 	 * @param status
 	 */
-	public VirtualMachine(String uuid, String hostname, String architecture, String cores,
-			String memory, String status, String speed) {
+	public VirtualMachine(String uuid, String hostname, String architecture,
+			String cores, String memory, String status, String speed) {
 		this.uuid = uuid;
 		this.hostname = hostname;
 		this.architecture = architecture;
@@ -28,9 +28,9 @@ public class VirtualMachine {
 		this.status = status;
 		this.speed = speed;
 	}
-	
-	public VirtualMachine(){
-		
+
+	public VirtualMachine() {
+
 	}
 
 	public String getHostname() {
@@ -72,7 +72,7 @@ public class VirtualMachine {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -80,7 +80,7 @@ public class VirtualMachine {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	public String getSpeed() {
 		return speed;
 	}
@@ -88,10 +88,10 @@ public class VirtualMachine {
 	public void setSpeed(String speed) {
 		this.speed = speed;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		String results;
-		results = "\nUuid:\t\t" + this.uuid; 
+		results = "\nUuid:\t\t" + this.uuid;
 		results += "\nHostname:\t" + this.hostname;
 		results += "\nArchitetture:\t" + this.architecture;
 		results += "\nCores:\t\t" + this.cores;
@@ -100,5 +100,5 @@ public class VirtualMachine {
 		results += "\nStatus:\t\t" + this.status.toUpperCase() + "\n\n";
 		return results;
 	}
-	
+
 }

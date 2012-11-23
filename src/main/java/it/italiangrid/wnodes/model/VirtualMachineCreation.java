@@ -5,6 +5,7 @@ public class VirtualMachineCreation {
 	private String tag;
 	private String size;
 	private String vo;
+
 	/**
 	 * @param tag
 	 * @param size
@@ -14,7 +15,7 @@ public class VirtualMachineCreation {
 		this.size = size;
 		this.vo = vo;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -24,15 +25,15 @@ public class VirtualMachineCreation {
 	public String getTag() {
 		return tag;
 	}
-	
+
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-	
+
 	public String getSize() {
 		return size;
 	}
-	
+
 	public void setSize(String size) {
 		this.size = size;
 	}
@@ -40,9 +41,9 @@ public class VirtualMachineCreation {
 	public String getVo() {
 		return vo;
 	}
-	
+
 	public void setVo(String vo) {
 		this.vo = vo;
 	}
-	
+
 }

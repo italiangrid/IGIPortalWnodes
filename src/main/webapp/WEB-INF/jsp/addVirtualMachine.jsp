@@ -18,9 +18,9 @@
 		</portlet:renderURL>
 		<aui:fieldset>
 			<aui:form name="addUserInfoForm" commandName="vm" action="${addUrl}">
-			
+
 				<aui:column columnWidth="25">
-				
+
 					<aui:fieldset label="New Virtual Machine">
 
 						<aui:select name="tag">
@@ -38,7 +38,7 @@
 					</aui:fieldset>
 				</aui:column>
 				<aui:column columnWidth="25">
-				
+
 					<aui:fieldset label="VO">
 
 						<c:choose>
@@ -63,14 +63,15 @@
 					</aui:fieldset>
 
 				</aui:column>
-				
+
 				<c:if test="${fn:length(vos) > 0 }">
 					<aui:button-row>
 						<aui:button type="submit" value="Create Virtual Machine" />
-						<aui:button type="cancel" value="View List" onClick="location.href='${backUrl}';"></aui:button>
+						<aui:button type="cancel" value="View List"
+							onClick="location.href='${backUrl}';"></aui:button>
 					</aui:button-row>
 				</c:if>
-				
+
 			</aui:form>
 
 		</aui:fieldset>

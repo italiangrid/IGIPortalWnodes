@@ -23,14 +23,13 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
-
 @Controller("actionController")
 @RequestMapping(value = "VIEW")
 public class ActionsController {
-	
+
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
-	
+
 	@ActionMapping(params = "myaction=addVirtualMachine")
 	public void addVirtualMachine(@ModelAttribute VirtualMachineCreation vm,
 			ActionRequest request, ActionResponse response, SessionStatus status) {
@@ -39,17 +38,18 @@ public class ActionsController {
 		try {
 			User user = PortalUtil.getUser(request);
 			String uuid = service.createVirtualMachines(user.getUserId(), vm);
-			
+
 			if (uuid != null) {
-				if(uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")){
+				if (uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")) {
 					log.info("Virtual machines {}. created for user {}.", uuid,
 							user.getUserId());
 					SessionMessages.add(request, "vm-created");
-					//response.setRenderParameter("myaction", "showList");
-					response.setRenderParameter("myaction", "showAddVirtualMachine");
+					// response.setRenderParameter("myaction", "showList");
+					response.setRenderParameter("myaction",
+							"showAddVirtualMachine");
 					status.setComplete();
 					return;
-				}else{
+				} else {
 					SessionErrors.add(request, "vo-not-supported");
 				}
 			}
@@ -65,7 +65,7 @@ public class ActionsController {
 			log.info("System exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.info("Exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
@@ -74,21 +74,22 @@ public class ActionsController {
 		response.setRenderParameter("myaction", "showAddVirtualMachine");
 		return;
 	}
-	
+
 	@ActionMapping(params = "myaction=deleteVirtualMachine")
-	public void removeVirtualMachine(@RequestParam String uuid, ActionRequest request,
-			ActionResponse response, SessionStatus status) {
+	public void removeVirtualMachine(@RequestParam String uuid,
+			ActionRequest request, ActionResponse response, SessionStatus status) {
 		WnodesService service = new WnodesServiceCLIImpl();
-		
+
 		try {
 			User user = PortalUtil.getUser(request);
-			
-			if(service.deleteVirtualMachines(user.getUserId(), uuid)){
-				log.info("Deleted Virtual Machine {}. of the user {}.",user.getUserId(),uuid);
+
+			if (service.deleteVirtualMachines(user.getUserId(), uuid)) {
+				log.info("Deleted Virtual Machine {}. of the user {}.",
+						user.getUserId(), uuid);
 				SessionMessages.add(request, "vm-deleted");
-			}else{
+			} else {
 				SessionErrors.add(request, "vm-not-deleted");
-				
+
 			}
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
@@ -98,33 +99,33 @@ public class ActionsController {
 			log.info("System exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.info("Exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
 		}
-		
+
 		response.setRenderParameter("myaction", "showList");
 	}
 
-	
 	@ActionMapping(params = "myaction=deleteMultipleVirtualMachine")
-	public void removemultipleVirtualMachine(@RequestParam String[] vmToDel, ActionRequest request,
-			ActionResponse response, SessionStatus status) {
+	public void removemultipleVirtualMachine(@RequestParam String[] vmToDel,
+			ActionRequest request, ActionResponse response, SessionStatus status) {
 		WnodesService service = new WnodesServiceCLIImpl();
-		
+
 		try {
 			User user = PortalUtil.getUser(request);
-			for(String uuid : vmToDel){
-				
-				log.info("VM to delete: {}.",uuid);
-				if(service.deleteVirtualMachines(user.getUserId(), uuid)){
-					log.info("Deleted Virtual Machine {} of the user {}.",user.getUserId(),uuid);
+			for (String uuid : vmToDel) {
+
+				log.info("VM to delete: {}.", uuid);
+				if (service.deleteVirtualMachines(user.getUserId(), uuid)) {
+					log.info("Deleted Virtual Machine {} of the user {}.",
+							user.getUserId(), uuid);
 					SessionMessages.add(request, "vm-deleted");
-				}else{
-					log.info("VM not deleted: {}.",uuid);
+				} else {
+					log.info("VM not deleted: {}.", uuid);
 					SessionErrors.add(request, "vm-not-deleted");
-					
+
 				}
 			}
 		} catch (PortalException e) {
@@ -135,12 +136,12 @@ public class ActionsController {
 			log.info("System exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.info("Exception: {}.", e.getMessage());
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
 		}
-		
+
 		response.setRenderParameter("myaction", "showList");
 	}
 

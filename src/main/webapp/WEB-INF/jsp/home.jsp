@@ -20,43 +20,45 @@
 			<div class="portlet-msg-error">Empty List</div>
 		</c:if>
 
-		<br/>
+		<br />
 		<portlet:renderURL var="addUrl">
 			<portlet:param name="myaction" value="showAddVirtualMachine" />
 		</portlet:renderURL>
-		
+
 		<aui:form name="goToAddForm" action="${addUrl}">
-			<aui:button type="submit" value="Add Virtual Machine" />		
+			<aui:button type="submit" value="Add Virtual Machine" />
 		</aui:form>
-		<br/>
+		<br />
 		<portlet:actionURL var="deleteUrl">
 			<portlet:param name="myaction" value="deleteMultipleVirtualMachine" />
 		</portlet:actionURL>
-		
-		
+
+
 		<form name="goToAddForm" action="${deleteUrl}" method="POST">
-			
-			<liferay-ui:search-container emptyResultsMessage="No Virtual Machines"
-				delta="10">
+
+			<liferay-ui:search-container
+				emptyResultsMessage="No Virtual Machines" delta="10">
 				<liferay-ui:search-container-results>
-					
-				<%
-					results = ListUtil.subList(virtualMachines,
-							searchContainer.getStart(),
-							searchContainer.getEnd());
-					total = virtualMachines.size();
-	
-					pageContext.setAttribute("results", results);
-					pageContext.setAttribute("total", total);
-				%>
-				
+
+					<%
+						results = ListUtil.subList(virtualMachines,
+										searchContainer.getStart(),
+										searchContainer.getEnd());
+						total = virtualMachines.size();
+
+						pageContext.setAttribute("results", results);
+						pageContext.setAttribute("total", total);
+					%>
+
 				</liferay-ui:search-container-results>
 				<liferay-ui:search-container-row
 					className="it.italiangrid.wnodes.model.VirtualMachine"
 					keyProperty="uuid" modelVar="vms">
 					<liferay-ui:search-container-column-text name="Del">
 						<c:if test="${(vms.status=='ACTIVE') }">
-							<input name="vmToDel" label="" type="checkbox" value="${vms.uuid }" onchange="viewOrHideDeleteButton('${vms.uuid }');"></input>
+							<input name="vmToDel" label="" type="checkbox"
+								value="${vms.uuid }"
+								onchange="viewOrHideDeleteButton('${vms.uuid }');"></input>
 						</c:if>
 					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text name="Hostname">
@@ -89,20 +91,22 @@
 								path="/WEB-INF/jsp/vm-action.jsp" align="right" />
 						</c:if>
 						<c:if test="${vms.hostname=='null' }">
-							<liferay-ui:search-container-column-jsp  name="Actions"
+							<liferay-ui:search-container-column-jsp name="Actions"
 								path="/WEB-INF/jsp/vm-del-action.jsp" align="right" />
 						</c:if>
 					</c:if>
 					<c:if test="${vms.status=='INACTIVE' }">
-						<liferay-ui:search-container-column-text name="Actions" align="right" >No Operation available.</liferay-ui:search-container-column-text>
+						<liferay-ui:search-container-column-text name="Actions"
+							align="right">No Operation available.</liferay-ui:search-container-column-text>
 					</c:if>
 				</liferay-ui:search-container-row>
 				<liferay-ui:search-iterator />
 			</liferay-ui:search-container>
 			<div id="deleteButton" style="display: none;">
 				<aui:button-row>
-					<aui:button type="submit" value="Delete Selected VM" onClick="return confirm('Are you sure you want to delete these?');"/>
-				</aui:button-row>		
+					<aui:button type="submit" value="Delete Selected VM"
+						onClick="return confirm('Are you sure you want to delete these?');" />
+				</aui:button-row>
 			</div>
 		</form>
 

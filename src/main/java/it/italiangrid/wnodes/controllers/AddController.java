@@ -31,7 +31,7 @@ import com.liferay.portal.util.PortalUtil;
 public class AddController {
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
-	
+
 	@Autowired
 	private UserInfoService userInfoService;
 
@@ -41,7 +41,7 @@ public class AddController {
 
 		return "addVirtualMachine";
 	}
-	
+
 	@ModelAttribute("userInfo")
 	public UserInfo getUserInfo(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
@@ -54,8 +54,9 @@ public class AddController {
 	public List<String> getTags(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
 		WnodesInfoService infoService;
-		//if (user != null)
-			infoService = new WnodesInfoServiceCLIImpl(Long.toString(user.getUserId()));
+		// if (user != null)
+		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
+				.getUserId()));
 		return infoService.getTags();
 	}
 
@@ -63,27 +64,30 @@ public class AddController {
 	public List<String> getSizes(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
 		WnodesInfoService infoService;
-		//if (user != null)
-			infoService = new WnodesInfoServiceCLIImpl(Long.toString(user.getUserId()));
+		// if (user != null)
+		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
+				.getUserId()));
 		return infoService.getSizes();
 	}
-	
+
 	@ModelAttribute("vm")
 	public VirtualMachineCreation getCommandObject() {
 		return new VirtualMachineCreation();
 	}
-	
+
 	@ModelAttribute("vos")
-	public List<String> getActiveVO(RenderRequest request){
+	public List<String> getActiveVO(RenderRequest request) {
 		try {
 			User user = PortalUtil.getUser(request);
-			
-			if(user!=null){
-				log.info("Getting active proxies for user {}.",user.getUserId());
-				UserServiceUtil proxyService = new UserServiceUtilImpl(user.getUserId());
+
+			if (user != null) {
+				log.info("Getting active proxies for user {}.",
+						user.getUserId());
+				UserServiceUtil proxyService = new UserServiceUtilImpl(
+						user.getUserId());
 				return proxyService.getActiveProxy();
 			}
-			
+
 		} catch (PortalException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +95,7 @@ public class AddController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
