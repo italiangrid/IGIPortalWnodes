@@ -1,38 +1,5 @@
 <%@ include file="/WEB-INF/jsp/init.jsp"%>
 
-<script type="text/javascript">
-<!--
-
-//-->
-
-	var list = new Array();
-	
-	function viewOrHideDeleteButton(uuid){
-		var i=0;
-		var newlist = new Array();
-		var isPresent = false;
-		for(i=0; i<list.length; i++){
-			if(list[i]!=uuid){
-				newlist.push(list[i]);
-			}else{
-				isPresent = true;
-			}	
-		}
-		
-		if(isPresent == false)
-			list.push(uuid);
-		else
-			list = newlist;
-		
-		if(list.length==0){
-			$("#deleteButton").hide("slow");
-		}else{
-			$("#deleteButton").show("slow");
-		}
-	}
-
-</script>
-
 <jsp:useBean id="userInfo"
 	type="it.italiangrid.portal.dbapi.domain.UserInfo" scope="request" />
 <jsp:useBean id="virtualMachines"

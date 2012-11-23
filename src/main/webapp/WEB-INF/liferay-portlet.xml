@@ -7,7 +7,8 @@
 		<instanceable>false</instanceable>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<header-portal-javascript>/IGIPortalWnodes-0.0.1/js/jquery-1.6.1.min.js</header-portal-javascript>
-		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+		<header-portal-javascript>https://flyback.cnaf.infn.it:22443/static/gateone.js</header-portal-javascript>
+		<header-portlet-javascript>/js/main.js</header-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
