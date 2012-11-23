@@ -23,13 +23,38 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
+/**
+ * Controller class for the operations that user can be run from the WNoDeS
+ * portlet.
+ * 
+ * @author dmichelotto
+ * 
+ */
+
 @Controller("actionController")
 @RequestMapping(value = "VIEW")
 public class ActionsController {
 
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
 
+	/**
+	 * Action mapping for the action "addVirtualMachine": create a new virtual
+	 * machine.
+	 * 
+	 * @param vm
+	 *            - The istance of VirtualMachineCreation that contain the
+	 *            informations for creating a new virtual machine.
+	 * @param request
+	 *            - The HTTP request.
+	 * @param response
+	 *            - The HTTP response.
+	 * @param status
+	 *            - The HTTP status.
+	 */
 	@ActionMapping(params = "myaction=addVirtualMachine")
 	public void addVirtualMachine(@ModelAttribute VirtualMachineCreation vm,
 			ActionRequest request, ActionResponse response, SessionStatus status) {
@@ -75,6 +100,20 @@ public class ActionsController {
 		return;
 	}
 
+	/**
+	 * Action mapping for the action "deleteVirtualMachine": delete a virtual
+	 * machine.
+	 * 
+	 * @param uuid
+	 *            - The identifier of the virtual machine that the user want to
+	 *            delete.
+	 * @param request
+	 *            - The HTTP request.
+	 * @param response
+	 *            - The HTTP response.
+	 * @param status
+	 *            - The HTTP status.
+	 */
 	@ActionMapping(params = "myaction=deleteVirtualMachine")
 	public void removeVirtualMachine(@RequestParam String uuid,
 			ActionRequest request, ActionResponse response, SessionStatus status) {
@@ -108,6 +147,20 @@ public class ActionsController {
 		response.setRenderParameter("myaction", "showList");
 	}
 
+	/**
+	 * Action mapping for the action "deleteMultipleVirtualMachine": delete a
+	 * list of virtual machine.
+	 * 
+	 * @param vmToDel
+	 *            - The list of the virtual machine identifier that the user
+	 *            want to delete.
+	 * @param request
+	 *            - The HTTP request.
+	 * @param response
+	 *            - The HTTP response.
+	 * @param status
+	 *            - The HTTP status.
+	 */
 	@ActionMapping(params = "myaction=deleteMultipleVirtualMachine")
 	public void removemultipleVirtualMachine(@RequestParam String[] vmToDel,
 			ActionRequest request, ActionResponse response, SessionStatus status) {

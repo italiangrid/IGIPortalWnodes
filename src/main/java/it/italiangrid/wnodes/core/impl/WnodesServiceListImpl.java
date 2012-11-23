@@ -11,18 +11,45 @@ import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
+/**
+ * The implementation, based on a List, of the service interface that define the
+ * CRUD methods for the WNoDeS interaction. This class is used only for test.
+ * 
+ * @author dmichelotto
+ * 
+ */
 public class WnodesServiceListImpl implements WnodesService {
 
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(WnodesServiceListImpl.class);
 
+	/**
+	 * The list that contain all the created virtual machine.
+	 */
 	private static List<VirtualMachine> vms = new ArrayList<VirtualMachine>();
+
+	/**
+	 * A counter used for the creation of the hostname
+	 */
 	private static int hostnameCount = 2;
 
+	/**
+	 * The constructor of the class.
+	 */
 	public WnodesServiceListImpl() {
 
 	}
 
+	/**
+	 * Get the list of the virtual machines instantiated by the user.
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @return Return the list of the virtual machines.
+	 */
 	public List<VirtualMachine> getVirtualMachines(long userId) {
 
 		log.info("Gettign all the user's virtual machines.");
@@ -30,6 +57,16 @@ public class WnodesServiceListImpl implements WnodesService {
 		return vms;
 	}
 
+	/**
+	 * Get a specific virtual machine identified by the location identifier.
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param uuid
+	 *            - The virtual machine location identifier.
+	 * @return Return an instance of the class VirtualMachine that contain the
+	 *         virtual machine informations.
+	 */
 	public VirtualMachine getVirtualMachine(long userId, String uuid) {
 		log.info("Gettign specific user's virtual machines.");
 
@@ -42,6 +79,19 @@ public class WnodesServiceListImpl implements WnodesService {
 		return null;
 	}
 
+	/**
+	 * Create a new virtual machine with the information contained in a instance
+	 * of the class VirtualMachineCreatio.
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param vm
+	 *            - The instance of the class VirtualMachineCreatio that contain
+	 *            the selected tag, size and VO.
+	 * @return Return a string with the virtual machine identified if all is
+	 *         done, otherwise return null if there was an exception or the
+	 *         error message if something went wrong.
+	 */
 	public String createVirtualMachines(long userId, VirtualMachineCreation vmc) {
 		log.info("Create new virtual machines.");
 
@@ -55,6 +105,15 @@ public class WnodesServiceListImpl implements WnodesService {
 		return uuid;
 	}
 
+	/**
+	 * Delete a specific virtual machine identified by the location identifier.
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param uuid
+	 *            - The virtual machine location identifier.
+	 * @return Return true if all is done or false if something went wrong.
+	 */
 	public boolean deleteVirtualMachines(long userId, String uuid) {
 
 		log.info("Deleting specific user's virtual machines.");

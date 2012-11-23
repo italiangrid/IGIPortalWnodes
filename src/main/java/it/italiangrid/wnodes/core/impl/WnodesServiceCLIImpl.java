@@ -16,21 +16,41 @@ import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
+/**
+ * The implementation, based on the WNoDeS CLI, of the service interface that
+ * define the CRUD methods for the WNoDeS interaction.
+ * 
+ * @author dmichelotto
+ * 
+ */
 public class WnodesServiceCLIImpl implements WnodesService {
 
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(WnodesServiceCLIImpl.class);
 
+	/**
+	 * The constructor of the class.
+	 */
 	public WnodesServiceCLIImpl() {
 
 	}
 
+	/**
+	 * Get the list of the virtual machines instantiated by the user. Call the
+	 * WNoDeS CLI command: wnodes_list_images
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @return Return the list of the virtual machines.
+	 */
 	public List<VirtualMachine> getVirtualMachines(long userId) {
 		log.info("CLI Implementation");
 		// TODO Auto-generated method stub
 		/*
-		 * command: wnodes_list_images 
-		 * outputs:
+		 * command: wnodes_list_images outputs:
 		 * https://test-wnodes-web01.cnaf.infn
 		 * .it:8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91
 		 * https:/
@@ -81,6 +101,17 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		return null;
 	}
 
+	/**
+	 * Get a specific virtual machine identified by the location identifier.
+	 * Call the WNoDeS CLI command: wnodes_list_image
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param uuid
+	 *            - The virtual machine location identifier.
+	 * @return Return an instance of the class VirtualMachine that contain the
+	 *         virtual machine informations.
+	 */
 	public VirtualMachine getVirtualMachine(long userId, String uuid) {
 		log.info("CLI Implementation");
 		/*
@@ -148,6 +179,20 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		return null;
 	}
 
+	/**
+	 * Create a new virtual machine with the information contained in a instance
+	 * of the class VirtualMachineCreatio. Call the WNoDeS CLI command:
+	 * wnodes_create_image
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param vm
+	 *            - The instance of the class VirtualMachineCreatio that contain
+	 *            the selected tag, size and VO.
+	 * @return Return a string with the virtual machine identified if all is
+	 *         done, otherwise return null if there was an exception or the
+	 *         error message if something went wrong.
+	 */
 	public String createVirtualMachines(long userId, VirtualMachineCreation vm) {
 		log.info("CLI Implementation");
 		/*
@@ -200,15 +245,24 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		return null;
 	}
 
+	/**
+	 * Delete a specific virtual machine identified by the location identifier.
+	 * Call the WNoDeS CLI command: wnodes_delete_image
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 * @param uuid
+	 *            - The virtual machine location identifier.
+	 * @return Return true if all is done or false if something went wrong.
+	 */
 	public boolean deleteVirtualMachines(long userId, String uuid) {
 		log.info("CLI Implementation");
 		/*
 		 * command wnodes_delete_image -l
 		 * https://test-wnodes-web01.cnaf.infn.it:
-		 * 8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91 
+		 * 8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91
 		 * 
-		 * result: 
-		 * if empty ok else some errors
+		 * result: if empty ok else some errors
 		 */
 
 		try {

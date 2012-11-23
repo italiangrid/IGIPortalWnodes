@@ -1,5 +1,12 @@
+/**
+ * List of the virtual machine that the user want to delete.
+ */
 var list = new Array();
 
+/**
+ * Function that show the delete button if some virtual machine are selected, or hide the button if none.
+ * @param uuid - The virtual machine identifier selected.
+ */
 function viewOrHideDeleteButton(uuid) {
 	var i = 0;
 	var newlist = new Array();
@@ -24,9 +31,11 @@ function viewOrHideDeleteButton(uuid) {
 	}
 }
 
+/**
+ * Function that close all the opened shell.
+ */
 function closeSession() {
 
-	// GateOne.Terminal.closeTerminal('5');
 	var i = 0;
 	for (i = 0; i <= 100; i++) {
 		GateOne.Net.killTerminal(i);
@@ -34,6 +43,11 @@ function closeSession() {
 
 }
 
+/**
+ * Function that create a new shell.
+ * @param host - The hostname of the ssh connection.
+ * @param user - The user identifier.
+ */
 function create(host, user) {
 
 	GateOne.init({

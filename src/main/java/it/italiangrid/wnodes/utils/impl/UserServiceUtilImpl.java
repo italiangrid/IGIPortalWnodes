@@ -13,17 +13,40 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The implementation of the util interface that define some utility method.
+ * 
+ * @author dmichelotto
+ * 
+ */
 public class UserServiceUtilImpl implements UserServiceUtil {
 
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(UserServiceUtilImpl.class);
 
+	/**
+	 * The user identifier.
+	 */
 	private long userId = 0;
 
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param userId
+	 *            - The user identifier.
+	 */
 	public UserServiceUtilImpl(long userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * Get the list of the proxies downloaded by the user.
+	 * 
+	 * @return Return the list of the proxies.
+	 */
 	public List<String> getActiveProxy() {
 
 		String dir = System.getProperty("java.io.tmpdir") + "/users/" + userId
@@ -68,6 +91,11 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 		return false;
 	}
 
+	/**
+	 * Create a ssh key pair for the virtual machine login without password.
+	 * 
+	 * @return Return true if all is done or false if something went wrong.
+	 */
 	private void printOutput(InputStream stdout, InputStream stderr)
 			throws IOException {
 

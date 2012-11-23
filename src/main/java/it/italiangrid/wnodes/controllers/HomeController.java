@@ -27,16 +27,40 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
+/**
+ * Controller class for the first page of the WNoDeS portlet.
+ * 
+ * Check if user is logged in and have already downloaded proxy. If all is done
+ * show the list of the his instantiated virtual machine
+ * 
+ * @author dmichelotto
+ * 
+ */
+
 @Controller("homeController")
 @RequestMapping(value = "VIEW")
 public class HomeController {
 
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
 
+	/**
+	 * UserInfo Service.
+	 */
 	@Autowired
 	private UserInfoService userInfoService;
 
+	/**
+	 * Render Mapping of the first page displayed.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return home page if user is authenticated and have proxy,
+	 *         otherwise return the appropriate error page.
+	 */
 	@RenderMapping
 	public String showHomePage(RenderRequest request) {
 		log.info("Home Controllor");
@@ -66,11 +90,26 @@ public class HomeController {
 		return "error";
 	}
 
+	/**
+	 * Render mapping of the action "showList".
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return home page if user is authenticated and have proxy,
+	 *         otherwise return the appropriate error page.
+	 */
 	@RenderMapping(params = "myaction=showList")
 	public String showList(RenderRequest request) {
 		return showHomePage(request);
 	}
 
+	/**
+	 * Attribute mapping for the "userInfo" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the userInfo object of the logged user.
+	 */
 	@ModelAttribute("userInfo")
 	public UserInfo getUserInfo(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
@@ -84,6 +123,14 @@ public class HomeController {
 		return null;
 	}
 
+	/**
+	 * Attribute mapping for the "virtualMachines" variable displayed in the
+	 * page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the list of the virtual machines istantiated by the user.
+	 */
 	@ModelAttribute("virtualMachines")
 	public List<VirtualMachine> getVirtualMachines(RenderRequest request) {
 		log.info("Getting all virtual machines of the user");

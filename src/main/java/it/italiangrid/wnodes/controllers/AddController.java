@@ -26,15 +26,37 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
+/**
+ * Controller class for the add virtual machine page of the WNoDeS portlet.
+ * 
+ * Return to the page the appropriate tag and size values retrieved from WNoDeS.
+ * 
+ * @author dmichelotto
+ * 
+ */
+
 @Controller("addController")
 @RequestMapping(value = "VIEW")
 public class AddController {
+
+	/**
+	 * Logger of the class.
+	 */
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
 
+	/**
+	 * UserInfo Service.
+	 */
 	@Autowired
 	private UserInfoService userInfoService;
 
+	/**
+	 * Render mapping of the page with the form for creating new virtual
+	 * machine.
+	 * 
+	 * @return The page addVirtualMachine.
+	 */
 	@RenderMapping(params = "myaction=showAddVirtualMachine")
 	public String showAddVirtualMachine() {
 		log.info("Add Controllor");
@@ -42,6 +64,13 @@ public class AddController {
 		return "addVirtualMachine";
 	}
 
+	/**
+	 * Attribute mapping for the "userInfo" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the userInfo object of the logged user.
+	 */
 	@ModelAttribute("userInfo")
 	public UserInfo getUserInfo(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
@@ -50,6 +79,13 @@ public class AddController {
 		return null;
 	}
 
+	/**
+	 * Attribute mapping for the "tags" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the list of the tags supported by WNoDes.
+	 */
 	@ModelAttribute("tags")
 	public List<String> getTags(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
@@ -60,6 +96,13 @@ public class AddController {
 		return infoService.getTags();
 	}
 
+	/**
+	 * Attribute mapping for the "sizes" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the list of the sizes supported by WNoDes.
+	 */
 	@ModelAttribute("sizes")
 	public List<String> getSizes(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
@@ -70,11 +113,25 @@ public class AddController {
 		return infoService.getSizes();
 	}
 
+	/**
+	 * Attribute mapping for the "vm" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return a new instance of the class VirtualMachineCreation.
+	 */
 	@ModelAttribute("vm")
 	public VirtualMachineCreation getCommandObject() {
 		return new VirtualMachineCreation();
 	}
 
+	/**
+	 * Attribute mapping for the "vos" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the list of the proxies downloaded by the user.
+	 */
 	@ModelAttribute("vos")
 	public List<String> getActiveVO(RenderRequest request) {
 		try {
