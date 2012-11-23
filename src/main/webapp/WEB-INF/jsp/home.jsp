@@ -40,9 +40,16 @@
 				delta="10">
 				<liferay-ui:search-container-results>
 					
-					
-				<c:set var="results" value="${virtualMachines }"/>
-				<c:set var="total" value="${fn:length(virtualMachines) }"/>
+				<%
+					results = ListUtil.subList(virtualMachines,
+							searchContainer.getStart(),
+							searchContainer.getEnd());
+					total = virtualMachines.size();
+	
+					pageContext.setAttribute("results", results);
+					pageContext.setAttribute("total", total);
+				%>
+				
 				</liferay-ui:search-container-results>
 				<liferay-ui:search-container-row
 					className="it.italiangrid.wnodes.model.VirtualMachine"
