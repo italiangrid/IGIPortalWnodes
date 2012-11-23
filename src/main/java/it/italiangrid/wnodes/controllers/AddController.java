@@ -4,7 +4,6 @@ import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesInfoService;
 import it.italiangrid.wnodes.core.impl.WnodesInfoServiceCLIImpl;
-import it.italiangrid.wnodes.core.impl.WnodesInfoServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;

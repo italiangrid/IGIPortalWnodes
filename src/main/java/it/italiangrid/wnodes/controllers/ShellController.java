@@ -4,11 +4,7 @@ import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
-import it.italiangrid.wnodes.core.impl.WnodesServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachine;
-import it.italiangrid.wnodes.utils.UserServiceUtil;
-import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
-
 import javax.portlet.RenderRequest;
 
 import org.slf4j.Logger;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 

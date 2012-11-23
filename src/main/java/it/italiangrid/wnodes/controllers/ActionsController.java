@@ -2,7 +2,6 @@ package it.italiangrid.wnodes.controllers;
 
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
-import it.italiangrid.wnodes.core.impl.WnodesServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
 import javax.portlet.ActionRequest;

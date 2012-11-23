@@ -6,7 +6,6 @@ import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
-import it.italiangrid.wnodes.core.impl.WnodesServiceListImpl;
 import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
@@ -57,10 +56,8 @@ public class HomeController {
 			}
 			
 		} catch (PortalException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
