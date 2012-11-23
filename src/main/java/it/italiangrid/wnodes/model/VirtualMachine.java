@@ -81,6 +81,14 @@ public class VirtualMachine {
 		this.uuid = uuid;
 	}
 	
+	public String getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(String speed) {
+		this.speed = speed;
+	}
+	
 	public String toString(){
 		String results;
 		results = "\nUuid:\t\t" + this.uuid; 

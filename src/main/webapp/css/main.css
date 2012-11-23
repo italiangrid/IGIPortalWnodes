@@ -1,4 +1,4 @@
-#containerWnodes{
+#containerWnodes {
 	box-shadow: 10px 10px 5px #888;
 	background-color: #e4e4e4;
 	border: 1px;
@@ -9,17 +9,18 @@
 	margin-right: 9px;
 }
 
-#presentationWnodes{
+#presentationWnodes {
 	color: black;
-    font-size: 120%;
-    font-weight: bold;
-    border-bottom: 1px solid #CCCCCC;
-   	display: block;
-    position: absolute;
-    width: 90%;
-    margin-bottom: 15px;
-    padding: 10px 0 0 10px;
+	font-size: 120%;
+	font-weight: bold;
+	border-bottom: 1px solid #CCCCCC;
+	display: block;
+	position: absolute;
+	width: 90%;
+	margin-bottom: 15px;
+	padding: 10px 0 0 10px;
 }
-#contentWnodes{
+
+#contentWnodes {
 	margin-top: 45px;
 }

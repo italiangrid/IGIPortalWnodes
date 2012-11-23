@@ -1,44 +1,35 @@
 <%@ include file="/WEB-INF/jsp/init.jsp"%>
 
-<style>
-<!--
-CSS temporaneo da spostare poi in main css
--->#containerWnodes {
-	box-shadow: 10px 10px 5px #888;
-	background-color: #e4e4e4;
-	border: 1px;
-	border-style: solid;
-	border-color: #c1c1c1;
-	border-radius: 5px;
-	padding: 5px;
-	margin-right: 9px;
-}
-
-#presentationWnodes {
-	color: black;
-	font-size: 120%;
-	font-weight: bold;
-	border-bottom: 1px solid #CCCCCC;
-	display: block;
-	position: absolute;
-	width: 90%;
-	margin-bottom: 15px;
-	padding: 10px 0 0 10px;
-}
-
-#contentWnodes {
-	margin-top: 45px;
-}
-</style>
-
-<<script type="text/javascript">
+<script type="text/javascript">
 <!--
 
 //-->
 
-	var checked = 0;
+	var list = new Array();
 	
-	
+	function viewOrHideDeleteButton(uuid){
+		var i=0;
+		var newlist = new Array();
+		var isPresent = false;
+		for(i=0; i<list.length; i++){
+			if(list[i]!=uuid){
+				newlist.push(list[i]);
+			}else{
+				isPresent = true;
+			}	
+		}
+		
+		if(isPresent == false)
+			list.push(uuid);
+		else
+			list = newlist;
+		
+		if(list.length==0){
+			$("#deleteButton").hide("slow");
+		}else{
+			$("#deleteButton").show("slow");
+		}
+	}
 
 </script>
 
@@ -91,7 +82,7 @@ CSS temporaneo da spostare poi in main css
 					keyProperty="uuid" modelVar="vms">
 					<liferay-ui:search-container-column-text name="Del">
 						<c:if test="${(vms.status=='ACTIVE') }">
-							<input name="vmToDel" label="" type="checkbox" value="${vms.uuid }"></input>
+							<input name="vmToDel" label="" type="checkbox" value="${vms.uuid }" onchange="viewOrHideDeleteButton('${vms.uuid }');"></input>
 						</c:if>
 					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text name="Hostname">
@@ -114,7 +105,8 @@ CSS temporaneo da spostare poi in main css
 						property="memory" />
 					<liferay-ui:search-container-column-text name="Cores"
 						property="cores" />
-					
+					<liferay-ui:search-container-column-text name="Speed"
+						property="speed" />
 					<liferay-ui:search-container-column-text name="Status"
 						property="status" />
 					<c:if test="${vms.status=='ACTIVE' }">
@@ -133,11 +125,12 @@ CSS temporaneo da spostare poi in main css
 				</liferay-ui:search-container-row>
 				<liferay-ui:search-iterator />
 			</liferay-ui:search-container>
-			<aui:button-row>
-				<aui:button type="submit" value="Delete Selected VM" onClick="return confirm('Are you sure you want to delete these?');"/>
-			</aui:button-row>		
+			<div id="deleteButton" style="display: none;">
+				<aui:button-row>
+					<aui:button type="submit" value="Delete Selected VM" onClick="return confirm('Are you sure you want to delete these?');"/>
+				</aui:button-row>		
+			</div>
 		</form>
-		<br/>
 
 	</div>
 </div>

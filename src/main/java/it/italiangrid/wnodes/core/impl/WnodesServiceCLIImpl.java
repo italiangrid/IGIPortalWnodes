@@ -116,7 +116,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					}
 					vm = new VirtualMachine(uuid, results.get(0), results.get(2), results.get(4),
 							results.get(3), results.get(1), results.get(5));
-					
+					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}
 				

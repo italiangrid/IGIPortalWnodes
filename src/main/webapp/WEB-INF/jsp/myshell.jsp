@@ -1,36 +1,5 @@
 <%@ include file="/WEB-INF/jsp/init.jsp"%>
 
-<style>
-<!--
-CSS temporaneo da spostare poi in main css
--->#containerWnodes {
-	box-shadow: 10px 10px 5px #888;
-	background-color: #e4e4e4;
-	border: 1px;
-	border-style: solid;
-	border-color: #c1c1c1;
-	border-radius: 5px;
-	padding: 5px;
-	margin-right: 9px;
-}
-
-#presentationWnodes {
-	color: black;
-	font-size: 120%;
-	font-weight: bold;
-	border-bottom: 1px solid #CCCCCC;
-	display: block;
-	position: absolute;
-	width: 90%;
-	margin-bottom: 15px;
-	padding: 10px 0 0 10px;
-}
-
-#contentWnodes {
-	margin-top: 45px;
-}
-</style>
-
 <script type="text/javascript"
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
 </script>
@@ -43,11 +12,17 @@ src="https://flyback.cnaf.infn.it:22443/static/gateone.js">
 
 	function closeSession(){
 		
+		//GateOne.Terminal.closeTerminal('5');
+		var i =0;
+		for(i=0;i<=100;i++){
+			GateOne.Net.killTerminal(i);
+		}
+		
 		
 	}
 	
 	function create(){
-		alert("${host}");
+		
 		GateOne.init({
 			url: "https://flyback.cnaf.infn.it:22443/",
 			fontSize: '120%',
