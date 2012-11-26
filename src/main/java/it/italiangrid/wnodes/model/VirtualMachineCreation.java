@@ -23,6 +23,16 @@ public class VirtualMachineCreation {
 	 * The selected image Virtual Organization.
 	 */
 	private String vo;
+	
+	private int qta;
+
+	public int getQta() {
+		return qta;
+	}
+
+	public void setQta(int qta) {
+		this.qta = qta;
+	}
 
 	/**
 	 * Constructor of the class.

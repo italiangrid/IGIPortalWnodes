@@ -17,8 +17,8 @@ import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
 /**
- * The implementation, based on the WNoDeS CLI, of the service interface that
- * define the CRUD methods for the WNoDeS interaction.
+ * The implementation, based on the WNoDeS CLI, of the service interface that define the CRUD methods for the WNoDeS
+ * interaction.
  * 
  * @author dmichelotto
  * 
@@ -38,9 +38,10 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 	}
 
+
 	/**
-	 * Get the list of the virtual machines instantiated by the user. Call the
-	 * WNoDeS CLI command: wnodes_list_images
+	 * Get the list of the virtual machines instantiated by the user.
+	 * Call the WNoDeS CLI command: wnodes_list_images
 	 * 
 	 * @param userId
 	 *            - The user identifier.
@@ -50,7 +51,8 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		log.info("CLI Implementation");
 		// TODO Auto-generated method stub
 		/*
-		 * command: wnodes_list_images outputs:
+		 * command: wnodes_list_images 
+		 * outputs:
 		 * https://test-wnodes-web01.cnaf.infn
 		 * .it:8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91
 		 * https:/
@@ -181,8 +183,8 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 	/**
 	 * Create a new virtual machine with the information contained in a instance
-	 * of the class VirtualMachineCreatio. Call the WNoDeS CLI command:
-	 * wnodes_create_image
+	 * of the class VirtualMachineCreatio.
+	 * Call the WNoDeS CLI command: wnodes_create_image
 	 * 
 	 * @param userId
 	 *            - The user identifier.
@@ -260,9 +262,10 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		/*
 		 * command wnodes_delete_image -l
 		 * https://test-wnodes-web01.cnaf.infn.it:
-		 * 8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91
+		 * 8443/resource/compute/99cfc95a-6095-4aaa-ad1a-2424a6880d91 
 		 * 
-		 * result: if empty ok else some errors
+		 * result: 
+		 * if empty ok else some errors
 		 */
 
 		try {

@@ -62,25 +62,31 @@ public class ActionsController {
 
 		try {
 			User user = PortalUtil.getUser(request);
-			String uuid = service.createVirtualMachines(user.getUserId(), vm);
-
-			if (uuid != null) {
-				if (uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")) {
-					log.info("Virtual machines {}. created for user {}.", uuid,
+			
+			for(int i=0; i<vm.getQta() ; i++ ){
+			
+				String uuid = service.createVirtualMachines(user.getUserId(), vm);
+	
+				if (uuid != null) {
+					if (uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")) {
+						log.info("Virtual machines {}. created for user {}.", uuid,
+								user.getUserId());
+						SessionMessages.add(request, "vm-created");
+						// response.setRenderParameter("myaction", "showList");
+						response.setRenderParameter("myaction",
+								"showAddVirtualMachine");
+						status.setComplete();
+						return;
+					} else {
+						SessionErrors.add(request, "vo-not-supported");
+					}
+				}else{
+					log.info("Virtual machines not created for user {}.",
 							user.getUserId());
-					SessionMessages.add(request, "vm-created");
-					// response.setRenderParameter("myaction", "showList");
-					response.setRenderParameter("myaction",
-							"showAddVirtualMachine");
-					status.setComplete();
-					return;
-				} else {
-					SessionErrors.add(request, "vo-not-supported");
+					SessionErrors.add(request, "vm-not-created");
 				}
+				
 			}
-			log.info("Virtual machines not created for user {}.",
-					user.getUserId());
-			SessionErrors.add(request, "vm-not-created");
 
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
@@ -119,6 +125,8 @@ public class ActionsController {
 			ActionRequest request, ActionResponse response, SessionStatus status) {
 		WnodesService service = new WnodesServiceCLIImpl();
 
+		log.info(uuid);
+		
 		try {
 			User user = PortalUtil.getUser(request);
 

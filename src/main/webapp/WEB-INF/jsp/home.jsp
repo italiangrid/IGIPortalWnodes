@@ -81,24 +81,9 @@
 						property="memory" />
 					<liferay-ui:search-container-column-text name="Cores"
 						property="cores" />
-					<liferay-ui:search-container-column-text name="Speed"
-						property="speed" />
 					<liferay-ui:search-container-column-text name="Status"
 						property="status" />
-					<c:if test="${vms.status=='ACTIVE' }">
-						<c:if test="${vms.hostname!='null' }">
-							<liferay-ui:search-container-column-jsp name="Actions"
-								path="/WEB-INF/jsp/vm-action.jsp" align="right" />
-						</c:if>
-						<c:if test="${vms.hostname=='null' }">
-							<liferay-ui:search-container-column-jsp name="Actions"
-								path="/WEB-INF/jsp/vm-del-action.jsp" align="right" />
-						</c:if>
-					</c:if>
-					<c:if test="${vms.status=='INACTIVE' }">
-						<liferay-ui:search-container-column-text name="Actions"
-							align="right">No Operation available.</liferay-ui:search-container-column-text>
-					</c:if>
+					
 				</liferay-ui:search-container-row>
 				<liferay-ui:search-iterator />
 			</liferay-ui:search-container>

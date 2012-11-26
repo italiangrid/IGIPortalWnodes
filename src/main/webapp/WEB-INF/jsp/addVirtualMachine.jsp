@@ -34,6 +34,16 @@
 								<aui:option value="${size }">${size }</aui:option>
 							</c:forEach>
 						</aui:select>
+						
+						<aui:select name="qta">
+							
+								<aui:option value="1">1</aui:option>
+								<aui:option value="2">2</aui:option>
+								<aui:option value="3">3</aui:option>
+								<aui:option value="4">4</aui:option>
+								
+							
+						</aui:select>
 
 					</aui:fieldset>
 				</aui:column>
