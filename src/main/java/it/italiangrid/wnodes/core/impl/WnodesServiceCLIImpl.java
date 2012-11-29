@@ -154,9 +154,9 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					while (st.hasMoreTokens()) {
 						results.add(st.nextToken());
 					}
-					vm = new VirtualMachine(uuid, results.get(0),
+					vm = new VirtualMachine(uuid, "gridlab04.cnaf.infn.it",
 							results.get(2), results.get(4), results.get(3),
-							results.get(1), results.get(5));
+							results.get(1), results.get(5)); //results.get(0)
 					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}

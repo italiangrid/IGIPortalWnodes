@@ -35,7 +35,7 @@
 							</c:forEach>
 						</aui:select>
 						
-						<aui:select name="qta">
+						<aui:select name="qta" label="Amount">
 							
 								<aui:option value="1">1</aui:option>
 								<aui:option value="2">2</aui:option>
