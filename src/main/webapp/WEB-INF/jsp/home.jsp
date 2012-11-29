@@ -56,7 +56,7 @@
 					keyProperty="uuid" modelVar="vms">
 					<liferay-ui:search-container-column-text name="Del">
 						<c:if test="${(vms.status=='ACTIVE') }">
-							<input name="vmToDel" label="" type="checkbox"
+							<input name="vmToDel" type="checkbox"
 								value="${vms.uuid }"
 								onchange="viewOrHideDeleteButton('${vms.uuid }');"></input>
 						</c:if>
