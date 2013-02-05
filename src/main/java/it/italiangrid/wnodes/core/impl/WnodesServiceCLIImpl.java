@@ -90,7 +90,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					new InputStreamReader(stderr));
 			while ((line = brCleanUp.readLine()) != null) {
 
-				log.info("[Stderr] " + line);
+				log.error("[Stderr] " + line);
 			}
 
 			brCleanUp.close();
@@ -154,9 +154,9 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					while (st.hasMoreTokens()) {
 						results.add(st.nextToken());
 					}
-					vm = new VirtualMachine(uuid, "gridlab04.cnaf.infn.it",
+					vm = new VirtualMachine(uuid, results.get(0),
 							results.get(2), results.get(4), results.get(3),
-							results.get(1), results.get(5)); //results.get(0)
+							results.get(1), results.get(5)); //"gridlab04.cnaf.infn.it"
 					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}
@@ -168,7 +168,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					new InputStreamReader(stderr));
 			while ((line = brCleanUp.readLine()) != null) {
 
-				log.info("[Stderr] " + line);
+				log.error("[Stderr] " + line);
 			}
 
 			brCleanUp.close();
@@ -211,7 +211,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String result = null;
 			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_create_image", "-t",
 					vm.getTag(), "-s", vm.getSize(), "--vo", vm.getVo() };
-			log.info("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2] + " "
+			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2] + " "
 					+ cmd[3] + " " + cmd[4] + " " + cmd[5] + " " + cmd[6]);
 
 			Process p = Runtime.getRuntime().exec(cmd, null, dir);
@@ -225,7 +225,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 			while (((line = output.readLine()) != null)) {
 
-				log.info("[Stdout] " + line);
+				log.error("[Stdout] " + line);
 				result = line;
 			}
 			output.close();
@@ -234,7 +234,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					new InputStreamReader(stderr));
 			while ((line = brCleanUp.readLine()) != null) {
 
-				log.info("[Stderr] " + line);
+				log.error("[Stderr] " + line);
 			}
 
 			brCleanUp.close();
@@ -274,7 +274,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String result = null;
 			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_delete_image", "-l",
 					uuid };
-			log.info("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
+			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
 
 			Process p = Runtime.getRuntime().exec(cmd, null, dir);
 
@@ -287,7 +287,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 			while (((line = output.readLine()) != null)) {
 
-				log.info("[Stdout] " + line);
+				log.error("[Stdout] " + line);
 				result = line;
 			}
 			output.close();
@@ -296,7 +296,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					new InputStreamReader(stderr));
 			while ((line = brCleanUp.readLine()) != null) {
 
-				log.info("[Stderr] " + line);
+				log.error("[Stderr] " + line);
 				result = line;
 			}
 

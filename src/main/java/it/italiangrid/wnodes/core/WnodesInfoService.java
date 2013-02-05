@@ -1,5 +1,7 @@
 package it.italiangrid.wnodes.core;
 
+import it.italiangrid.wnodes.model.MarketPlace;
+
 import java.util.List;
 
 /**
@@ -25,5 +27,13 @@ public interface WnodesInfoService {
 	 * @return Return the list of sizes.
 	 */
 	public List<String> getSizes();
+	
+	/**
+	 * Return the list of market place with the relative image tags that are available. Call
+	 * the WNoDeS CLI command: size_images_info
+	 * 
+	 * @return Return the list of market place.
+	 */
+	public List<MarketPlace> getMarketPlaces();
 
 }

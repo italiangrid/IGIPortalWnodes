@@ -4,6 +4,7 @@ import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesInfoService;
 import it.italiangrid.wnodes.core.impl.WnodesInfoServiceCLIImpl;
+import it.italiangrid.wnodes.model.MarketPlace;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
@@ -111,6 +112,23 @@ public class AddController {
 		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
 				.getUserId()));
 		return infoService.getSizes();
+	}
+	
+	/**
+	 * Attribute mapping for the "sizes" variable displayed in the page.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return Return the list of the sizes supported by WNoDes.
+	 */
+	@ModelAttribute("marketPlace")
+	public List<MarketPlace> getMarketPlace(RenderRequest request) {
+		User user = (User) request.getAttribute(WebKeys.USER);
+		WnodesInfoService infoService;
+		// if (user != null)
+		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
+				.getUserId()));
+		return infoService.getMarketPlaces();
 	}
 
 	/**

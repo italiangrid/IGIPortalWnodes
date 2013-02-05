@@ -63,7 +63,7 @@
 					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text name="Hostname">
 						<c:choose>
-							<c:when test="${vms.hostname!='null' }">
+							<c:when test="${vms.hostname!='Unknown' }">
 								<portlet:renderURL var="viewURL">
 									<portlet:param name="myaction" value="viewVirtualMachine" />
 									<portlet:param name="uuid" value="${vms.uuid }" />

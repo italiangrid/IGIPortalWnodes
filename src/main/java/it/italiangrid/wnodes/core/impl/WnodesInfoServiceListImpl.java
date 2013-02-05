@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.italiangrid.wnodes.core.WnodesInfoService;
+import it.italiangrid.wnodes.model.MarketPlace;
 
 /**
  * The implementation, based on a List, of the service interface that define the
@@ -42,6 +43,11 @@ public class WnodesInfoServiceListImpl implements WnodesInfoService {
 		result.add("big");
 
 		return result;
+	}
+
+	public List<MarketPlace> getMarketPlaces() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

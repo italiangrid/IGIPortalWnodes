@@ -62,21 +62,21 @@ public class ActionsController {
 
 		try {
 			User user = PortalUtil.getUser(request);
-			
+			log.error("Qtà= "+vm.getQta());
 			for(int i=0; i<vm.getQta() ; i++ ){
-			
+				vm.setSize(vm.getSize().split("#")[0]);
+				
 				String uuid = service.createVirtualMachines(user.getUserId(), vm);
 	
 				if (uuid != null) {
-					if (uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/resource/compute/")) {
-						log.info("Virtual machines {}. created for user {}.", uuid,
+					if (uuid.contains("https://test-wnodes-web01.cnaf.infn.it:8443/compute/")) {
+						log.error("Virtual machines {}. created for user {}.", uuid,
 								user.getUserId());
 						SessionMessages.add(request, "vm-created");
 						// response.setRenderParameter("myaction", "showList");
 						response.setRenderParameter("myaction",
 								"showAddVirtualMachine");
-						status.setComplete();
-						return;
+						
 					} else {
 						SessionErrors.add(request, "vo-not-supported");
 					}
@@ -85,8 +85,10 @@ public class ActionsController {
 							user.getUserId());
 					SessionErrors.add(request, "vm-not-created");
 				}
-				
 			}
+			
+			status.setComplete();
+			return;
 
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
