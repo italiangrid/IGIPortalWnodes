@@ -1,8 +1,7 @@
 <%@ include file="/WEB-INF/jsp/init.jsp"%>
 
 <div id="containerWnodes">
-	<div id="presentationWnodes">Hi ${userInfo.firstName }
-		${userInfo.lastName }</div>
+	<div id="presentationWnodes">SSH ${host }</div>
 	<div id="contentWnodes">
 	
 		<script type="text/javascript">

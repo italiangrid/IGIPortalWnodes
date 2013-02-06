@@ -7,8 +7,7 @@
 	scope="request" />
 
 <div id="containerWnodes">
-	<div id="presentationWnodes">Hi ${userInfo.firstName }
-		${userInfo.lastName }</div>
+	<div id="presentationWnodes">My Virtual Machines</div>
 	<div id="contentWnodes">
 
 		<liferay-ui:success key="added-ssh-key" message="added-ssh-key" />
@@ -26,7 +25,7 @@
 		</portlet:renderURL>
 
 		<aui:form name="goToAddForm" action="${addUrl}">
-			<aui:button type="submit" value="Add Virtual Machine" />
+			<aui:button type="submit" value="Create new Virtual Machine" />
 		</aui:form>
 		<br />
 		<portlet:actionURL var="deleteUrl">

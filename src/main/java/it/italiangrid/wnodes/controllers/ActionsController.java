@@ -6,6 +6,7 @@ import it.italiangrid.wnodes.model.VirtualMachineCreation;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
@@ -73,9 +75,8 @@ public class ActionsController {
 						log.error("Virtual machines {}. created for user {}.", uuid,
 								user.getUserId());
 						SessionMessages.add(request, "vm-created");
-						// response.setRenderParameter("myaction", "showList");
-						response.setRenderParameter("myaction",
-								"showAddVirtualMachine");
+						response.setRenderParameter("myaction", "showList");
+						return;
 						
 					} else {
 						SessionErrors.add(request, "vo-not-supported");
@@ -86,9 +87,6 @@ public class ActionsController {
 					SessionErrors.add(request, "vm-not-created");
 				}
 			}
-			
-			status.setComplete();
-			return;
 
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
@@ -103,7 +101,8 @@ public class ActionsController {
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
 		}
-
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 		response.setRenderParameter("myaction", "showAddVirtualMachine");
 		return;
 	}
@@ -153,7 +152,8 @@ public class ActionsController {
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
 		}
-
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 		response.setRenderParameter("myaction", "showList");
 	}
 
@@ -204,7 +204,8 @@ public class ActionsController {
 			SessionErrors.add(request, "system-exception");
 			e.printStackTrace();
 		}
-
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 		response.setRenderParameter("myaction", "showList");
 	}
 
