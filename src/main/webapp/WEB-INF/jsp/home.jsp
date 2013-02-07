@@ -15,11 +15,6 @@
 		<liferay-ui:success key="vm-deleted" message="vm-deleted" />
 		<liferay-ui:error key="vm-not-deleted" message="vm-not-deleted" />
 
-		<c:if test="${fn:length(virtualMachines)==0 }">
-			<div class="portlet-msg-error">Empty List</div>
-		</c:if>
-
-		<br />
 		<portlet:renderURL var="addUrl">
 			<portlet:param name="myaction" value="showAddVirtualMachine" />
 		</portlet:renderURL>

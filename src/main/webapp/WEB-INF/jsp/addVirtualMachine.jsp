@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/jsp/init.jsp"%>
 
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
 <script type="text/javascript">
 
 	function viewTags(name){
@@ -10,7 +12,6 @@
 	function viewSize(size, divName){
 		var infos = size.split("#");
 		$("#"+divName).html("CORES: "+infos[1]+"<br/>MEMORY: "+infos[2]+"<br/>DISK: "+infos[3]);
-		//$("#"+divName).fadeIn(30).css("background-color", 'blue').fadeOut(1000).css("background-color", 'blue');
 		
 		var $second_div = $("#"+divName); 
 		var oldBGColour = $second_div.css('background-color'); 
@@ -46,7 +47,7 @@
 		if (isPresent == false){
 			list.push(divName);
 			$("#settings_"+divName).show("slow");
-			$("#icon_"+divName).html("<img src='<%=request.getContextPath()%>/images/Delete.png' width='24px'/>");
+			$("#icon_"+divName).html("<img src='<%=request.getContextPath()%>/images/minus.png' width='24px'/>");
 		}else{
 			list = newlist;
 			$("#settings_"+divName).hide("slow");
@@ -55,7 +56,45 @@
 		}
 	}
 	
-	$(document).ready(function(){$("#mp_WNoDeS").show();})
+	function buildHtmlDisplay( aData )
+	{
+
+	        var display = "<div class=\"tag\">" 
+						+"<div id=\"tag_info_"+aData[0]+"\" class=\"description\" onclick=\"change('"+aData[0]+"');\">"
+						+"<div class=\"vmName\"><img src=\"<%=request.getContextPath()%>/images/cd.png\" width=\"24px\" /> "+aData[0]+"</div> <div id=\"icon_"+aData[0]+"\" class=\"vmIcon\"><img src=\"<%=request.getContextPath()%>/images/Add.png\" width=\"24px\"/></div>"
+						+"<div class=\"clear\"></div>"
+						+"<p><strong>OS</strong>: "+aData[1]+" : "+aData[2]+" : "+aData[3]+"<br/>"
+						+"<strong>Endorser</strong>: "+aData[4]+"<br/>"
+						+"<strong>Description</strong>: "+aData[5]+"</p>"
+						+"</div>"
+						+aData[6]
+						+"</div>";
+
+	        return display;
+	}
+	
+	$(document).ready(function(){
+			$("#mp_WNoDeS").show();
+			$('#search_table').dataTable({
+				"aoColumnDefs": [
+				                 { "bSortable": false, 
+		                                   "fnRender": function ( o, val ) {
+		                                                   return buildHtmlDisplay( o.aData );
+		                                               },
+		                                   "aTargets": [ 0 ] },
+				                 { "bSearchable": true, "bVisible": false, "aTargets": [1] }, //os
+				                 { "bSearchable": true, "bVisible": false, "aTargets": [2] }, //osversion
+				                 { "bSearchable": true, "bVisible": false, "aTargets": [3] }, //arch
+				                 { "bSearchable": true, "bVisible": false, "aTargets": [4] }, //endorser
+				                 { "bSearchable": true, "bVisible": false, "aTargets": [5] }, //description
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [6] }, //div
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [7] } //div
+				                 ]
+				                 
+			});
+			$("#search_table").css("width", "100%");
+			$(".hide").show();
+		})
 
 </script>
 
@@ -77,8 +116,8 @@
 }
 
 .info{
-	width:100%;
 	float: left;
+	width: 100%;
 }
 
 .icon{
@@ -119,12 +158,53 @@
 	float: left;
 }
 
+.vmName img{
+	margin-bottom: -6px;
+}
+
 .vmIcon{
 	margin-bottom: 10px;
 	padding: 5px;
 	width: 30px;
 	float:right; 
 }
+
+#search_table_wrapper{
+	width: 100%;
+}
+
+.sorting_disabled{
+	display: none;
+}
+
+#search_table_length{
+	float: left;
+	margin-left: 5px;
+}
+
+#search_table_filter{
+	float: right;
+	margin-right: 5px;
+}
+
+#search_table_info{
+	float: left;
+	margin-left: 5px;
+}
+
+#search_table_paginate{
+	float: right;
+	margin-right: 5px;
+}
+
+#search_table_paginate a{
+	padding-left: 5px;
+}
+
+.hide{
+	display: none;
+}
+
 
 </style>
 
@@ -145,90 +225,109 @@
 		</portlet:renderURL>
 		<aui:fieldset>
 			
-			<c:forEach var="mp" items="${marketPlace }">
-				<div id="mp_${mp.name }" class="mp">
-					<c:forEach var="t" items="${mp.tags }">
-						<div class="tag">
-						<aui:form id="t_${t.name }" name="t_${t.name }" commandName="vm" action="${addUrl}">
-							<div id="tag_info_${t.name }" class="description" onclick="change('${t.name }');">
-								<div class="vmName">${t.name }</div> <div id="icon_${t.name }"class="vmIcon"><img src="<%=request.getContextPath()%>/images/Add.png" width="24px"/></div>
-								<div class="clear"></div>
-								<p><strong>OS</strong>: ${t.os } : ${t.osVersion } : ${t.architecture }<br/>
-								<strong>Endorser</strong>: ${t.endorser }<br/>
-								<strong>Description</strong>: ${t.description }</p>
-							</div>
-							<div id="settings_${t.name }" class="settings">
-								<div class="info">
-								
-									
-									<aui:input type="hidden" name="tag" value="${t.name }"/>
-									<div class="col">
-										<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${t.name }')">
-											<c:forEach var="size" items="${mp.sizes }">
-												<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
-											</c:forEach>
-										</aui:select>
-										<div id="vm_info_${t.name }">
-											CORES: ${mp.sizes[0].cores }<br/>MEMORY: ${mp.sizes[0].memory }<br/>DISK: ${mp.sizes[0].disk }
-									</div>
-									</div>
-									<div class="col">
-										<aui:select name="qta" label="How many VM">
+			<table id="search_table" class="search hide">
+			    <thead>
+			        <tr>
+			            <th>tag</th>
+			            <th>os</th>
+			            <th>os-version</th>
+			            <th>arch</th>
+			            <th>endorser</th>
+			            <th>description</th>
+			            <th>addDiv</th>
+			            <th>addUrl</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    	<c:forEach var="t" items="${marketPlace[0].tags }">
+			    		<tr>
+			    			<td>${t.name }</td>
+			    			<td>${t.os }</td>
+			    			<td>${t.osVersion }</td>
+			    			<td>${t.architecture }</td>
+			    			<td>${t.endorser }</td>
+			    			<td>${t.description }</td>
+			    			<td>
+								<div id="settings_${t.name }" class="settings">
+											<div class="info">
 											
-												<aui:option value="1">1</aui:option>
-												<aui:option value="2">2</aui:option>
-												<aui:option value="3">3</aui:option>
-												<aui:option value="4">4</aui:option>
+											<aui:form id="t_${t.name }" name="t_${t.name }" commandName="vm" action="${addUrl}">	
+												<aui:input type="hidden" name="tag" value="${t.name }"/>
+												<div class="col">
+													<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${t.name }')">
+														<c:forEach var="size" items="${marketPlace[0].sizes }">
+															<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
+														</c:forEach>
+													</aui:select>
+													<div id="vm_info_${t.name }">
+														CORES: ${marketPlace[0].sizes[0].cores }<br/>MEMORY: ${marketPlace[0].sizes[0].memory }<br/>DISK: ${marketPlace[0].sizes[0].disk }
+												</div>
+												</div>
+												<div class="col">
+													<aui:select name="qta" label="How many VM">
+														
+															<aui:option value="1">1</aui:option>
+															<aui:option value="2">2</aui:option>
+															<aui:option value="3">3</aui:option>
+															<aui:option value="4">4</aui:option>
+															
+														
+													</aui:select>
+												</div>
 												
-											
-										</aui:select>
-									</div>
-									
-									<c:set var="check" value="false"/>
-									<c:forEach var="vo" items="${vos }">
-										<c:if test="${vo=='gridit' }">
-											<c:set var="check" value="true"/>
-										</c:if>
-									</c:forEach>
-									
-									<c:if test="${check=='true' }">
-										<div class="col">
-											<div style="padding-top: 10px;">
-												<strong>Selected VO: gridit</strong>
-												<aui:input type="hidden" name="vo" value="gridit"></aui:input>
+												<c:set var="check" value="false"/>
+												<c:forEach var="vo" items="${vos }">
+													<c:if test="${vo=='gridit' }">
+														<c:set var="check" value="true"/>
+													</c:if>
+												</c:forEach>
+												
+												<c:if test="${check=='true' }">
+													<div class="col">
+														<div style="padding-top: 10px;">
+															<strong>Selected VO:</strong> <br/>gridit
+															<aui:input type="hidden" name="vo" value="gridit"></aui:input>
+														</div>
+													</div>
+												
+													<div class="icon">
+														<aui:button-row>
+															<aui:button type="submit" value="Create Virtual Machine" />
+														</aui:button-row>
+													</div>
+												</c:if>
+												
+												<c:if test="${check=='false' }">
+													<div style="margin-top: 10px; float:left;" class="portlet-msg-error">Download your proxy before
+															adding a new Virtual Machine.</div>
+												</c:if>
+												<div class="clear"></div>
+												
+												</aui:form>
 											</div>
+											
+											<div class="clear"></div>
 										</div>
-									
-										<div class="icon">
-											<aui:button-row>
-												<aui:button type="submit" value="Create Virtual Machine" />
-											</aui:button-row>
-										</div>
-									</c:if>
-									
-									<c:if test="${check=='false' }">
-										<div style="margin-top: 10px; float:left;" class="portlet-msg-error">Download your proxy before
-												adding a new Virtual Machine.</div>
-									</c:if>
-									<div class="clear"></div>
-									
-									
-								</div>
-								
-								<div class="clear"></div>
-							</div>
-							
-						
-						</aui:form>
-						</div>
-					</c:forEach>
-				</div>
-			</c:forEach>
-			<aui:button-row>
+							</td>
+							<td>${addUrl }</td>
+			       		</tr>
+			    	</c:forEach>
+			     </tbody>
+			</table>
+			
+			<aui:button-row style="padding-top: 15px;">
 			<aui:button type="cancel" value="View Virtual Machine List"
 							onClick="location.href='${backUrl}';"></aui:button>
 			</aui:button-row>
 
 		</aui:fieldset>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 </div>

@@ -75,8 +75,6 @@ public class ActionsController {
 						log.error("Virtual machines {}. created for user {}.", uuid,
 								user.getUserId());
 						SessionMessages.add(request, "vm-created");
-						response.setRenderParameter("myaction", "showList");
-						return;
 						
 					} else {
 						SessionErrors.add(request, "vo-not-supported");
@@ -87,6 +85,9 @@ public class ActionsController {
 					SessionErrors.add(request, "vm-not-created");
 				}
 			}
+			
+			response.setRenderParameter("myaction", "showList");
+			return;
 
 		} catch (PortalException e) {
 			log.info("Portal exception: {}.", e.getMessage());
