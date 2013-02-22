@@ -45,7 +45,7 @@ public class WnodesInfoServiceListImpl implements WnodesInfoService {
 		return result;
 	}
 
-	public List<MarketPlace> getMarketPlaces() {
+	public MarketPlace getMarketPlaces() {
 		// TODO Auto-generated method stub
 		return null;
 	}

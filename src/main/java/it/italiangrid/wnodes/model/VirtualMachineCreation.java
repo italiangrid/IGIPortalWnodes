@@ -25,6 +25,9 @@ public class VirtualMachineCreation {
 	private String vo;
 	
 	private int qta;
+	
+	private String identifier;
+	private String endorser;
 
 	public int getQta() {
 		return qta;
@@ -44,10 +47,12 @@ public class VirtualMachineCreation {
 	 * @param vo
 	 *            - The VO.
 	 */
-	public VirtualMachineCreation(String tag, String size, String vo) {
+	public VirtualMachineCreation(String tag, String size, String vo, String identifier, String endorser) {
 		this.tag = tag;
 		this.size = size;
 		this.vo = vo;
+		this.identifier = identifier;
+		this.endorser = endorser;
 	}
 
 	/**
@@ -111,6 +116,44 @@ public class VirtualMachineCreation {
 	 */
 	public void setVo(String vo) {
 		this.vo = vo;
+	}
+
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	/**
+	 * @return the endorser
+	 */
+	public String getEndorser() {
+		return endorser;
+	}
+
+	/**
+	 * @param endorser the endorser to set
+	 */
+	public void setEndorser(String endorser) {
+		this.endorser = endorser;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "VirtualMachineCreation [tag=" + tag + ", size=" + size
+				+ ", vo=" + vo + ", qta=" + qta + ", identifier=" + identifier
+				+ ", endorser=" + endorser + "]";
 	}
 
 }

@@ -34,6 +34,6 @@ public interface WnodesInfoService {
 	 * 
 	 * @return Return the list of market place.
 	 */
-	public List<MarketPlace> getMarketPlaces();
+	public MarketPlace getMarketPlaces();
 
 }

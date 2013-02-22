@@ -122,7 +122,7 @@ public class AddController {
 	 * @return Return the list of the sizes supported by WNoDes.
 	 */
 	@ModelAttribute("marketPlace")
-	public List<MarketPlace> getMarketPlace(RenderRequest request) {
+	public MarketPlace getMarketPlace(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
 		WnodesInfoService infoService;
 		// if (user != null)

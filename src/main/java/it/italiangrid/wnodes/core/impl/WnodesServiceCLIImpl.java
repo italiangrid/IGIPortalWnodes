@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
@@ -156,7 +159,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 					}
 					vm = new VirtualMachine(uuid, results.get(0),
 							results.get(2), results.get(4), results.get(3),
-							results.get(1), results.get(5)); //"gridlab04.cnaf.infn.it"
+							results.get(1), "0.0"); //"gridlab04.cnaf.infn.it"
 					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}
@@ -209,12 +212,25 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
-			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_create_image", "-t",
-					vm.getTag(), "-s", vm.getSize(), "--vo", vm.getVo() };
+			String[] cmd = { "/usr/bin/wnodes/cli/create_image", "--imageid",
+					vm.getTag()+","+vm.getIdentifier()+","+vm.getEndorser(), "-s", vm.getSize(), "--vo", vm.getVo() };
 			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2] + " "
-					+ cmd[3] + " " + cmd[4] + " " + cmd[5] + " " + cmd[6]);
-
-			Process p = Runtime.getRuntime().exec(cmd, null, dir);
+					+ cmd[3] + " " + cmd[4] + " " + cmd[5] + " " + cmd[6]);	
+			
+//			String[] envp = {"PYTHONPATH=/var/lib/stratuslab/python/"};
+			Map<String,String> sysEnv = System.getenv();
+			
+			Set<String> list  = sysEnv.keySet();
+			Iterator<String> iter = list.iterator();
+			String enviroment = "PYTHONPATH=/var/lib/stratuslab/python/";			
+			while(iter.hasNext()) {
+			     String key = iter.next();
+			     String value = sysEnv.get(key);
+			     enviroment +="@@"+key+"="+value;
+			}
+			String[] envp = enviroment.split("@@");
+			
+			Process p = Runtime.getRuntime().exec(cmd, envp, dir);
 
 			InputStream stdout = p.getInputStream();
 			InputStream stderr = p.getErrorStream();
@@ -272,9 +288,8 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
-			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_delete_image", "-l",
-					uuid };
-			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
+			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_delete_image", "--locations="+uuid };
+			log.error("Command {}.", cmd[0] + " " + cmd[1]);
 
 			Process p = Runtime.getRuntime().exec(cmd, null, dir);
 

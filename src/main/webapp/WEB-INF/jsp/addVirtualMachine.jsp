@@ -67,7 +67,7 @@
 						+"<strong>Endorser</strong>: "+aData[4]+"<br/>"
 						+"<strong>Description</strong>: "+aData[5]+"</p>"
 						+"</div>"
-						+aData[6]
+						+aData[7]
 						+"</div>";
 
 	        return display;
@@ -87,8 +87,9 @@
 				                 { "bSearchable": true, "bVisible": false, "aTargets": [3] }, //arch
 				                 { "bSearchable": true, "bVisible": false, "aTargets": [4] }, //endorser
 				                 { "bSearchable": true, "bVisible": false, "aTargets": [5] }, //description
-				                 { "bSearchable": false, "bVisible": false, "aTargets": [6] }, //div
-				                 { "bSearchable": false, "bVisible": false, "aTargets": [7] } //div
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [6] }, //identifier
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [7] }, //div
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [8] } //div
 				                 ]
 				                 
 			});
@@ -234,12 +235,13 @@
 			            <th>arch</th>
 			            <th>endorser</th>
 			            <th>description</th>
+			            <th>identifier</th>
 			            <th>addDiv</th>
 			            <th>addUrl</th>
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<c:forEach var="t" items="${marketPlace[0].tags }">
+			    	<c:forEach var="t" items="${marketPlace.tags }">
 			    		<tr>
 			    			<td>${t.name }</td>
 			    			<td>${t.os }</td>
@@ -247,20 +249,23 @@
 			    			<td>${t.architecture }</td>
 			    			<td>${t.endorser }</td>
 			    			<td>${t.description }</td>
+			    			<td>${t.identifier }</td>
 			    			<td>
 								<div id="settings_${t.name }" class="settings">
 											<div class="info">
 											
 											<aui:form id="t_${t.name }" name="t_${t.name }" commandName="vm" action="${addUrl}">	
 												<aui:input type="hidden" name="tag" value="${t.name }"/>
+												<aui:input type="hidden" name="identifier" value="${t.identifier }"/>
+												<aui:input type="hidden" name="endorser" value="${t.endorser }"/>
 												<div class="col">
 													<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${t.name }')">
-														<c:forEach var="size" items="${marketPlace[0].sizes }">
+														<c:forEach var="size" items="${marketPlace.sizes }">
 															<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
 														</c:forEach>
 													</aui:select>
 													<div id="vm_info_${t.name }">
-														CORES: ${marketPlace[0].sizes[0].cores }<br/>MEMORY: ${marketPlace[0].sizes[0].memory }<br/>DISK: ${marketPlace[0].sizes[0].disk }
+														CORES: ${marketPlace.sizes[0].cores }<br/>MEMORY: ${marketPlace.sizes[0].memory }<br/>DISK: ${marketPlace.sizes[0].disk }
 												</div>
 												</div>
 												<div class="col">

@@ -8,6 +8,7 @@ public class Tag {
 	private String osVersion;
 	private String description;
 	private String endorser;
+	private String identifier;
 
 	/**
 	 * @param name
@@ -18,7 +19,7 @@ public class Tag {
 	 * @param endorser
 	 */
 	public Tag(String name, String architecture, String os, String osVersion,
-			String description, String endorser) {
+			String description, String endorser, String identifier) {
 		super();
 		this.name = name;
 		this.architecture = architecture;
@@ -26,6 +27,7 @@ public class Tag {
 		this.osVersion = osVersion;
 		this.description = description;
 		this.endorser = endorser;
+		this.identifier = identifier;
 	}
 
 	public String getName() {
@@ -100,10 +102,28 @@ public class Tag {
 		this.endorser = endorser;
 	}
 	
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Tag [name=" + name + ", architecture=" + architecture + ", os="
 				+ os + ", osVersion=" + osVersion + ", description="
-				+ description + ", endorser=" + endorser + "]";
+				+ description + ", endorser=" + endorser + ", identifier="
+				+ identifier + "]";
 	}
 }

@@ -64,6 +64,7 @@ public class ActionsController {
 
 		try {
 			User user = PortalUtil.getUser(request);
+			log.error(vm.toString());
 			log.error("Qtà= "+vm.getQta());
 			for(int i=0; i<vm.getQta() ; i++ ){
 				vm.setSize(vm.getSize().split("#")[0]);
