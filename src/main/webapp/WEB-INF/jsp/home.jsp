@@ -7,7 +7,7 @@
 	scope="request" />
 
 <div id="containerWnodes">
-	<div id="presentationWnodes">My Virtual Machines</div>
+	<div id="presentationWnodes">My Instances</div>
 	<div id="contentWnodes">
 
 		<liferay-ui:success key="added-ssh-key" message="added-ssh-key" />
@@ -20,7 +20,7 @@
 		</portlet:renderURL>
 
 		<aui:form name="goToAddForm" action="${addUrl}">
-			<aui:button type="submit" value="Create new Virtual Machine" />
+			<aui:button type="submit" value="Create new Instance" />
 		</aui:form>
 		<br />
 		<portlet:actionURL var="deleteUrl">
@@ -31,7 +31,7 @@
 		<form name="goToAddForm" action="${deleteUrl}" method="POST">
 
 			<liferay-ui:search-container
-				emptyResultsMessage="No Virtual Machines" delta="10">
+				emptyResultsMessage="No Instances" delta="10">
 				<liferay-ui:search-container-results>
 
 					<%
@@ -83,7 +83,7 @@
 			</liferay-ui:search-container>
 			<div id="deleteButton" style="display: none;">
 				<aui:button-row>
-					<aui:button type="submit" value="Delete Selected VM"
+					<aui:button type="submit" value="Delete Selected Instance"
 						onClick="return confirm('Are you sure you want to delete these?');" />
 				</aui:button-row>
 			</div>

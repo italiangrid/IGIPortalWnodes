@@ -210,7 +210,7 @@
 </style>
 
 <div id="containerWnodes">
-	<div id="presentationWnodes">Choose a Virtual Machine image</div>
+	<div id="presentationWnodes">Choose an Instance</div>
 	<div id="contentWnodes">
 		<liferay-ui:success key="vm-created" message="vm-created" />
 		<liferay-ui:error key="portal-exception" message="exception" />
@@ -269,7 +269,7 @@
 												</div>
 												</div>
 												<div class="col">
-													<aui:select name="qta" label="How many VM">
+													<aui:select name="qta" label="How many Instances">
 														
 															<aui:option value="1">1</aui:option>
 															<aui:option value="2">2</aui:option>
@@ -297,7 +297,7 @@
 												
 													<div class="icon">
 														<aui:button-row>
-															<aui:button type="submit" value="Create Virtual Machine" />
+															<aui:button type="submit" value="Create Instance" />
 														</aui:button-row>
 													</div>
 												</c:if>
@@ -321,7 +321,7 @@
 			</table>
 			
 			<aui:button-row style="padding-top: 15px;">
-			<aui:button type="cancel" value="View Virtual Machine List"
+			<aui:button type="cancel" value="View Instances List"
 							onClick="location.href='${backUrl}';"></aui:button>
 			</aui:button-row>
 

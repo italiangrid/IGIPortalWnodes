@@ -13,7 +13,7 @@
 		<portlet:param name="myaction" value="viewVirtualMachine" />
 		<portlet:param name="uuid" value="<%=primKey%>" />
 	</portlet:renderURL>
-	<liferay-ui:icon image="edit" message="View Machine" url="${viewURL}" />
+	<liferay-ui:icon image="edit" message="View Instance" url="${viewURL}" />
 
 	<portlet:actionURL var="deleteURL">
 		<portlet:param name="myaction" value="deleteVirtualMachine" />
