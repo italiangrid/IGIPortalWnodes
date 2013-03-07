@@ -3,31 +3,16 @@
  */
 package it.italiangrid.wnodes.controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-
 import it.italiangrid.wnodes.model.KeyPair;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
-import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.springframework.web.portlet.multipart.MultipartActionRequest;
-
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 
