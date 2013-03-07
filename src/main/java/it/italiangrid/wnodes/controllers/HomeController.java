@@ -114,13 +114,30 @@ public class HomeController {
 	public UserInfo getUserInfo(RenderRequest request) {
 		User user = (User) request.getAttribute(WebKeys.USER);
 		if (user != null) {
-			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
-			boolean status = service.createSshKey();
-			if (status)
-				SessionMessages.add(request, "added-ssh-key");
+//			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
+//			boolean status = service.createSshKey();
+//			if (status)
+//				SessionMessages.add(request, "added-ssh-key");
 			return userInfoService.findByUsername(user.getScreenName());
 		}
 		return null;
+	}
+	
+	/**
+	 * Check if the key pair was already created/uploaded.
+	 * 
+	 * @param request
+	 *            - The HTTP request.
+	 * @return true if the key pair was already created/uploaded, false otherwise.
+	 */
+	@ModelAttribute("keyPairExist")
+	public boolean keyPairExist(RenderRequest request){
+		User user = (User) request.getAttribute(WebKeys.USER);
+		if (user != null) {
+			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
+			return service.sshKeysExist();
+		}
+		return false;
 	}
 
 	/**
@@ -146,6 +163,8 @@ public class HomeController {
 			log.info("User haven't proxy.");
 			return null;
 		}
+		if(!check.sshKeysExist())
+			return null;
 		WnodesService wnodesService = new WnodesServiceCLIImpl();
 		return wnodesService.getVirtualMachines(userId);
 

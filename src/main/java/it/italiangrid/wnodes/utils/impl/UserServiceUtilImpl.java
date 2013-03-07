@@ -4,6 +4,7 @@ import it.italiangrid.wnodes.utils.UserServiceUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +13,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * The implementation of the util interface that define some utility method.
@@ -66,7 +69,31 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 
 		return proxies;
 	}
+	
+	/**
+	 * Check if the key pair was already created/uploaded.
+	 * @return true if the key pair was already created/uploaded, false otherwise.
+	 */
+	public boolean sshKeysExist(){
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String keyPub = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa.pub";
+		log.info("keyFile = " + key);
+		log.info("keyPubFile = " + keyPub);
 
+		File keyFile = new File(key);
+		File keyFilePub = new File(keyPub);
+		
+		if(keyFile.exists()&&keyFilePub.exists())
+			return true;
+		return false;
+		
+	}
+
+	/**
+	 * Create key pair keys for ssh access.
+	 */
 	public boolean createSshKey() {
 		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
 				+ "/id_rsa";
@@ -104,7 +131,7 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 		String line = null;
 
 		while ((line = output.readLine()) != null) {
-			log.info("[Stdout] " + line);
+			log.error("[Stdout] " + line);
 		}
 		output.close();
 
@@ -113,10 +140,71 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 		while ((line = brCleanUp.readLine()) != null) {
 
 			if (!line.contains("....")) {
-				log.info("[Stderr] " + line);
+				log.error("[Stderr] " + line);
 			}
 		}
 
+	}
+
+	/**
+	 * Store in the user folder the key pair.
+	 * 
+	 * @param keyMultipartFile - private key
+	 * @param keyPubMultipartFile - public key
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	public void storeKeys(CommonsMultipartFile keyMultipartFile,
+			CommonsMultipartFile keyPubMultipartFile) throws IllegalStateException, IOException {
+		
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String keyPub = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa.pub";
+		log.info("keyFile = " + key);
+		log.info("keyPubFile = " + keyPub);
+
+		File keyFile = new File(key);
+		File keyFilePub = new File(keyPub);
+		
+		if(!keyFile.exists()&&!keyFilePub.exists()){
+			
+//			keyMultipartFile.transferTo(keyFile);
+//			keyPubMultipartFile.transferTo(keyFilePub);
+			
+			FileOutputStream fos = new FileOutputStream(keyFile);
+			fos.write(keyMultipartFile.getBytes());
+			fos.close();
+			fos = new FileOutputStream(keyFilePub);
+			fos.write(keyPubMultipartFile.getBytes());
+			fos.close();
+			
+			Runtime.getRuntime().exec("chmod 600 "+key);
+			
+		}
+		
+	}
+
+	/**
+	 * Delete ssh key pair.
+	 */
+	public void destroyKeyPair() {
+		// TODO Auto-generated method stub
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String keyPub = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa.pub";
+		log.info("keyFile = " + key);
+		log.info("keyPubFile = " + keyPub);
+
+		File keyFile = new File(key);
+		File keyFilePub = new File(keyPub);
+		
+		if(keyFile.exists())
+			keyFile.delete();
+		
+		if(keyFilePub.exists())
+			keyFilePub.delete();
 	}
 
 }

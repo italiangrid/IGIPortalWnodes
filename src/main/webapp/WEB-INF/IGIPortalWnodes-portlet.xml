@@ -52,6 +52,10 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="portletMultipartResolver" class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver">
+		<property name="maxUploadSize" value="1000000"/>
+	</bean>
 		
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -1,8 +1,12 @@
 package it.italiangrid.wnodes.controllers;
 
+import java.io.IOException;
+
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
+import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -15,13 +19,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.springframework.web.portlet.multipart.MultipartActionRequest;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
@@ -211,4 +218,23 @@ public class ActionsController {
 		response.setRenderParameter("myaction", "showList");
 	}
 
+	@ActionMapping(params = "myaction=createKeyPair")
+	public void createKeyPair(ActionRequest request, ActionResponse response){
+		try {
+			User user = PortalUtil.getUser(request);
+			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
+			boolean status = service.createSshKey();
+			if (status)
+				SessionMessages.add(request, "added-ssh-key");
+			
+			response.setRenderParameter("myaction", "showKeyManagement");
+			
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
