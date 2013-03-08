@@ -10,6 +10,7 @@ import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
+import javax.portlet.PortletConfig;
 import javax.portlet.RenderRequest;
 
 import org.slf4j.Logger;
@@ -22,6 +23,9 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
@@ -134,7 +138,23 @@ public class HomeController {
 		User user = (User) request.getAttribute(WebKeys.USER);
 		if (user != null) {
 			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
-			return service.sshKeysExist();
+			if(service.sshKeysExist()){
+				return true;
+			}else{
+				if(service.sshKeyPubExistOnly()){
+					//Dowload from myproxy
+					
+					//if myproxy ok return true, else print error and return false
+					UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
+					boolean myproxyStatus = service.downloadKeys(userInfo);
+					if(myproxyStatus){
+						return true;
+					}
+					SessionErrors.add(request, "myproxy-error");
+					PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+					SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+				}
+			}
 		}
 		return false;
 	}
@@ -162,8 +182,23 @@ public class HomeController {
 			log.info("User haven't proxy.");
 			return null;
 		}
-		if(!check.sshKeysExist())
-			return null;
+		if(!check.sshKeysExist()){
+			if(check.sshKeyPubExistOnly()){
+				//Dowload from myproxy
+				
+				//if myproxy ok return true, else print error and return false
+				UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
+				boolean myproxyStatus = check.downloadKeys(userInfo);
+				if(!myproxyStatus){
+					SessionErrors.add(request, "myproxy-error");
+					PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+					SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+				}
+			}else{
+				return null;
+			}
+		}
+			
 		WnodesService wnodesService = new WnodesServiceCLIImpl();
 		return wnodesService.getVirtualMachines(userId);
 

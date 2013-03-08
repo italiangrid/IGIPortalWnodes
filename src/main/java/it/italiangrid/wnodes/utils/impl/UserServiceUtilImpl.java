@@ -1,6 +1,10 @@
 package it.italiangrid.wnodes.utils.impl;
 
+import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.wnodes.exception.WnodesPortletException;
+import it.italiangrid.wnodes.model.KeyPair;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.WnodesConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -93,7 +97,7 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 	/**
 	 * Create key pair keys for ssh access.
 	 */
-	public boolean createSshKey() {
+	public boolean createSshKey(UserInfo userInfo) {
 		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
 				+ "/id_rsa";
 		log.info("Directory = " + key);
@@ -101,7 +105,10 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 		File keyFile = new File(key);
 
 		if (!keyFile.exists()) {
-			String[] cmd = { "/usr/bin/ssh-keygen", "-t", "rsa", "-N", "",
+			
+			String password = userInfo.getPersistentId();
+			
+			String[] cmd = { "/usr/bin/ssh-keygen", "-t", "rsa", "-N", password,
 					"-f", key };
 			try {
 				Process p = Runtime.getRuntime().exec(cmd);
@@ -152,9 +159,9 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 	 * @param keyPubMultipartFile - public key
 	 * @throws IOException 
 	 * @throws IllegalStateException 
+	 * @throws WnodesPortletException 
 	 */
-	public void storeKeys(CommonsMultipartFile keyMultipartFile,
-			CommonsMultipartFile keyPubMultipartFile) throws IllegalStateException, IOException {
+	public void storeKeys(KeyPair keyPair, UserInfo userInfo) throws IllegalStateException, IOException, WnodesPortletException {
 		
 		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
 				+ "/id_rsa";
@@ -162,14 +169,14 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 				+ "/id_rsa.pub";
 		log.info("keyFile = " + key);
 		log.info("keyPubFile = " + keyPub);
+		
+		CommonsMultipartFile keyMultipartFile = keyPair.getPrivateKey();
+		CommonsMultipartFile keyPubMultipartFile = keyPair.getPublicKey();
 
 		File keyFile = new File(key);
 		File keyFilePub = new File(keyPub);
 		
 		if(!keyFile.exists()&&!keyFilePub.exists()){
-			
-//			keyMultipartFile.transferTo(keyFile);
-//			keyPubMultipartFile.transferTo(keyFilePub);
 			
 			FileOutputStream fos = new FileOutputStream(keyFile);
 			fos.write(keyMultipartFile.getBytes());
@@ -180,6 +187,23 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 			
 			Runtime.getRuntime().exec("chmod 600 "+key);
 			
+			String password = userInfo.getPersistentId();
+			
+			String[] cmd = { "/usr/bin/ssh-keygen", "-p", "-P", keyPair.getPassword(), "-N", password,
+					"-f", key };
+			
+			Process p = Runtime.getRuntime().exec(cmd);
+			printOutput(p.getInputStream(), p.getErrorStream());
+			
+			if(!uploadKeys())
+				throw new WnodesPortletException("Proxy Problem");
+			
+			String[] cmd2 = { "/usr/bin/ssh-keygen", "-p", "-P", password, "-N", "",
+					"-f", key };
+			
+			Process p2 = Runtime.getRuntime().exec(cmd2);
+			printOutput(p2.getInputStream(), p2.getErrorStream());
+				
 		}
 		
 	}
@@ -204,6 +228,132 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 		
 		if(keyFilePub.exists())
 			keyFilePub.delete();
+		
+		try {
+			String[] cmd = {"/usr/bin/myproxy-destroy", "-s", WnodesConfig.getProperties("myproxy.server"), "-l", userId+"_ssh"};
+			
+			Process p = Runtime.getRuntime().exec(cmd);
+			printOutput(p.getInputStream(), p.getErrorStream());
+			
+		} catch (WnodesPortletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public boolean sshKeyPubExistOnly() {
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String keyPub = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa.pub";
+		log.info("keyFile = " + key);
+		log.info("keyPubFile = " + keyPub);
+
+		File keyFile = new File(key);
+		File keyFilePub = new File(keyPub);
+		
+		if(!keyFile.exists()&&keyFilePub.exists())
+			return true;
+		return false;
+	}
+
+	public boolean uploadKeys() {
+		boolean status = false;
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String proxy = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/x509up";
+		try {
+			String[] cmd = {"/usr/bin/myproxy-store", "-s", WnodesConfig.getProperties("myproxy.server"), "-l", userId+"_ssh", "-y", key, "-c", proxy};
+		
+		
+			Process p = Runtime.getRuntime().exec(cmd);
+			InputStream stdout = p.getInputStream();
+			InputStream stderr = p.getErrorStream();
+			
+			BufferedReader output = new BufferedReader(
+					new InputStreamReader(stdout));
+			String line = null;
+			
+			while ((line = output.readLine()) != null) {
+				log.error("[Stdout] " + line);
+				if(line.contains("Credentials saved to myproxy server.")){
+					status = true;
+				}
+			}
+			output.close();
+
+			BufferedReader brCleanUp = new BufferedReader(new InputStreamReader(
+					stderr));
+			while ((line = brCleanUp.readLine()) != null) {
+
+//				if (!line.contains("....")) {
+					log.error("[Stderr] " + line);
+//				}
+			}
+			
+		} catch (IOException e) {
+			status = false;
+			e.printStackTrace();
+		} catch (WnodesPortletException e) {
+			status = false;
+			e.printStackTrace();
+		}
+
+		return status;
+	}
+
+	public boolean downloadKeys(UserInfo userInfo) {
+		boolean status = false;
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String proxy = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/toDelete";
+		try {
+			String password = userInfo.getPersistentId();
+			String[] cmd = {"/usr/bin/python", "/upload_files/myproxy-retrieve-sshkey.py", WnodesConfig.getProperties("myproxy.server"), userId+"_ssh", proxy, key, password};
+		
+		
+			Process p = Runtime.getRuntime().exec(cmd);
+			InputStream stdout = p.getInputStream();
+			InputStream stderr = p.getErrorStream();
+			
+			BufferedReader output = new BufferedReader(
+					new InputStreamReader(stdout));
+			String line = null;
+			
+			while ((line = output.readLine()) != null) {
+				log.error("[Stdout] " + line);
+				if(line.contains("myproxy-retrieve success")){
+					status = true;
+				}
+			}
+			output.close();
+
+			BufferedReader brCleanUp = new BufferedReader(new InputStreamReader(
+					stderr));
+			while ((line = brCleanUp.readLine()) != null) {
+
+				if (!line.contains("....")) {
+					log.error("[Stderr] " + line);
+				}
+			}
+			
+			File toDelete = new File(proxy);
+			if(toDelete.exists())
+				toDelete.delete();
+			
+		} catch (IOException e) {
+			status = false;
+			e.printStackTrace();
+		} catch (WnodesPortletException e) {
+			status = false;
+			e.printStackTrace();
+		}
+
+		return status;
+	}
 }

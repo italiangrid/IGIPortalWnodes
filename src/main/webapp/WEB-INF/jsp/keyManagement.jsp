@@ -74,15 +74,15 @@
 }
 
 .icon img{
-	padding: 18px 25px 18px 5px;
+	padding: 38px 25px 38px 5px;
 }
 .divContent{
 	float: left;
-	height: 100px;
+	height: 140px;
 }
 
 #buttonGenerate{
-	padding-top: 30px;
+	padding-top: 55px;
 }
 </style>
 <div>
@@ -162,6 +162,9 @@
 			<div class="reset"></div>
 			<div class="label"> Public Key :</div>
 			<div class="value"><form:input path="publicKey" type="file"/></div>
+			<div class="reset"></div>
+			<div class="label"> Password :</div>
+			<div class="value"><form:input path="password" type="password"/></div>
 			<div class="reset"></div>
 			<button type="submit">Upload Key Pair</button>
 

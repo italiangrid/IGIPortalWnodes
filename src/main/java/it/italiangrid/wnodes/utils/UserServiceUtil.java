@@ -1,9 +1,11 @@
 package it.italiangrid.wnodes.utils;
 
+import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.wnodes.exception.WnodesPortletException;
+import it.italiangrid.wnodes.model.KeyPair;
+
 import java.io.IOException;
 import java.util.List;
-
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * The util interface that define some utility method.
@@ -22,10 +24,11 @@ public interface UserServiceUtil {
 
 	/**
 	 * Create a ssh key pair for the virtual machine login without password.
+	 * @param userInfo 
 	 * 
 	 * @return Return true if all is done or false if something went wrong.
 	 */
-	public boolean createSshKey();
+	public boolean createSshKey(UserInfo userInfo);
 	
 	/**
 	 * Check if the key pair was already created/uploaded.
@@ -42,12 +45,17 @@ public interface UserServiceUtil {
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
-	public void storeKeys(CommonsMultipartFile keyMultipartFile,
-			CommonsMultipartFile keyPubMultipartFile) throws IllegalStateException, IOException;
+	public void storeKeys(KeyPair keyPair, UserInfo userInfo) throws IllegalStateException, IOException, WnodesPortletException;
 
 	/**
 	 * Delete ssh key pair.
 	 */
 	public void destroyKeyPair();
+
+	public boolean sshKeyPubExistOnly();
+
+	public boolean uploadKeys();
+	
+	public boolean downloadKeys(UserInfo userInfo);
 
 }

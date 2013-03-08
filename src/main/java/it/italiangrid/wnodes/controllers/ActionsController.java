@@ -1,9 +1,13 @@
 package it.italiangrid.wnodes.controllers;
 
+import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
+import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.WnodesConfig;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
 import javax.portlet.ActionRequest;
@@ -12,6 +16,7 @@ import javax.portlet.PortletConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +42,9 @@ import com.liferay.portal.util.PortalUtil;
 @Controller("actionController")
 @RequestMapping(value = "VIEW")
 public class ActionsController {
+	
+	@Autowired
+	private UserInfoService userInfoService;
 
 	/**
 	 * Logger of the class.
@@ -217,9 +225,28 @@ public class ActionsController {
 		try {
 			User user = PortalUtil.getUser(request);
 			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
-			boolean status = service.createSshKey();
-			if (status)
+			
+			UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
+			boolean statusCreation = service.createSshKey(userInfo);
+			
+			boolean statusMyProxy = service.uploadKeys();
+			
+			if (statusCreation&&statusMyProxy)
 				SessionMessages.add(request, "added-ssh-key");
+			
+			if(!statusCreation||!statusMyProxy){
+				SessionErrors.add(request, "system-exception");
+				
+				PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+				SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+			}
+			String users = WnodesConfig.getProperties("active.users");
+			
+			if(!users.isEmpty()){
+				users+=";";
+			}
+			users+=user.getUserId();
+			WnodesConfig.setProperties("active.users", users);
 			
 			response.setRenderParameter("myaction", "showKeyManagement");
 			
@@ -227,6 +254,9 @@ public class ActionsController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WnodesPortletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -226,7 +226,7 @@
 				<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>" var="keyUrl">
 					<portlet:param name="myaction" value="showKeyManagement" />
 				</portlet:renderURL>
-		 		<aui:button cssClass="rightAlign" type="button" value="Manage Key Pair" onclick="$(this).modal2({width:600, height:450, message:true, src: '${keyUrl }'}).open(); return false;"/>
+		 		<aui:button cssClass="rightAlign" type="button" value="Manage Key Pair" onclick="$(this).modal2({width:600, height:500, message:true, src: '${keyUrl }'}).open(); return false;"/>
 	 		</aui:column>
 	 		</c:if>
 	 		<c:if test="${!keyPairExist }">
@@ -234,7 +234,7 @@
 				<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>" var="keyUrl">
 					<portlet:param name="myaction" value="showKeyManagement" />
 				</portlet:renderURL>
-		 		<aui:button cssClass="rightAlign" type="button" value="Manage Key Pair" onclick="$(this).modal2({width:600, height:450, message:true, src: '${keyUrl }'}).open(); return false;"/>
+		 		<aui:button cssClass="rightAlign" type="button" value="Manage Key Pair" onclick="$(this).modal2({width:600, height:500, message:true, src: '${keyUrl }'}).open(); return false;"/>
 	 		</aui:column>
 	 		</c:if>
  		</aui:fieldset>

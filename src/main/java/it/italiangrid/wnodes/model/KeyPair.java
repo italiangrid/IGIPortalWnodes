@@ -13,6 +13,7 @@ public class KeyPair {
 
 	private CommonsMultipartFile privateKey;
 	private CommonsMultipartFile publicKey;
+	private String password;
 	
 	public KeyPair() {
 	}
@@ -20,12 +21,14 @@ public class KeyPair {
 	/**
 	 * @param privateKey
 	 * @param publicKey
+	 * @param password
 	 */
 	public KeyPair(CommonsMultipartFile privateKey,
-			CommonsMultipartFile publicKey) {
+			CommonsMultipartFile publicKey, String password) {
 		super();
 		this.privateKey = privateKey;
 		this.publicKey = publicKey;
+		this.password = password;
 	}
 	/**
 	 * @return the privateKey
@@ -51,6 +54,20 @@ public class KeyPair {
 	public void setPublicKey(CommonsMultipartFile publicKey) {
 		this.publicKey = publicKey;
 	}
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
