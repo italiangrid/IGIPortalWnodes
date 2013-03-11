@@ -48,7 +48,7 @@
 .createOrUpload{
 	width: 80%;
 	
-	margin: 20px 9% 0 9% ;
+	margin: 24px 9% 0 9% ;
 	background-color: #f4fdef;
 	border: 1px;
 	border-style: solid;
@@ -58,12 +58,21 @@
 	font-size: 14px;
 }
 .label{
-	width: 80px;
+	width: 85px;
 	float: left;
 	margin-bottom: 10px;
 }
 .value{
 	float: left;
+	margin-bottom: 10px;
+}
+.label2{
+	width: 160px;
+	float: left;
+	margin-bottom: 10px;
+}
+.value2{
+	float: right;
 	margin-bottom: 10px;
 }
 .icon{
@@ -73,16 +82,46 @@
 	
 }
 
+.iconGenerate{
+	width: 20%;
+	float: left;
+	height: 80px;
+	
+}
+
 .icon img{
 	padding: 38px 25px 38px 5px;
 }
+
+.iconGenerate img{
+	padding: 8px 25px 8px 5px;
+}
 .divContent{
 	float: left;
-	height: 140px;
+	height: 150px;
+}
+.divContentGenerate{
+	float: left;
+	height: 80px;
 }
 
 #buttonGenerate{
-	padding-top: 55px;
+	padding-top: 25px;
+}
+#orContainer{
+	width: 580px;
+}
+#or{
+	margin: 15px 48%;
+	border-radius: 5px;
+	background: #e8e8e8;
+	display: inline-block;
+	padding: 3px 7px;
+	font-size: 14px;
+}
+#dashedLine{
+	margin-top: -28px;
+	border-top: 1px dashed #aaa;
 }
 </style>
 <div>
@@ -119,18 +158,17 @@
 		</portlet:actionURL>
 	
 		<aui:form action="${deleteUrl }">
-		<aui:button type="submit" value="Delete Uploaded Key Pair"  onClick="return confirm('Before deleting your key pair backup it on your PC. When you delete this key pair you are not able to use web terminal to access to the already created instances.');"></aui:button>
+		<aui:button type="submit" value="Delete Uploaded Key Pair"  onClick="return confirm('*** ATTENTION ***\nBefore deleting your key pair, backup it.\nAfter the delation you will be not able to access the existing instances using the web terminal.');"></aui:button>
 		</aui:form>
 		</div>
 	</c:if>
 	<c:if test="${!keyPairExist }">
 	
-		<h4>Choose what you want to do:</h4>
 		<div class="createOrUpload">
-		<div class="icon">
+		<div class="iconGenerate">
 			<img src="<%=request.getContextPath()%>/images/new.png" width="64" />
 		</div>
-		<div class="divContent">
+		<div class="divContentGenerate">
 		<portlet:actionURL var="createUrl">
 			<portlet:param name="myaction" value="createKeyPair"></portlet:param>
 		</portlet:actionURL>
@@ -142,6 +180,11 @@
 		</div>
 		<div class="reset"></div>
 		</div>
+		
+		<div id="orContainer">
+			<div id="or">OR</div>
+		</div>
+		<div id="dashedLine"></div>
 		
 		<div class="createOrUpload">
 		<div class="icon">
@@ -156,15 +199,14 @@
 
 		<form:form name="fileUploader" commandName="keyPair" method="post"
                 action="${uploadUrl}"  enctype="multipart/form-data">
-
-			<div class="label"> Private Key :</div>
-			<div class="value"><form:input path="privateKey" type="file"/></div>
-			<div class="reset"></div>
 			<div class="label"> Public Key :</div>
 			<div class="value"><form:input path="publicKey" type="file"/></div>
 			<div class="reset"></div>
-			<div class="label"> Password :</div>
-			<div class="value"><form:input path="password" type="password"/></div>
+			<div class="label"> Private Key :</div>
+			<div class="value"><form:input path="privateKey" type="file"/></div>
+			<div class="reset"></div>
+			<div class="label2"> Private Key Password :</div>
+			<div class="value2"><form:input path="password" type="password"/></div>
 			<div class="reset"></div>
 			<button type="submit">Upload Key Pair</button>
 

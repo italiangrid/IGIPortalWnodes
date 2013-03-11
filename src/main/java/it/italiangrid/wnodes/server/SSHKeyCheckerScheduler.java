@@ -22,8 +22,8 @@ public class SSHKeyCheckerScheduler implements ServletContextListener {
 		// TODO Auto-generated method stub
 		// Destroy thread
 		scheduler = Executors.newSingleThreadScheduledExecutor();
-//        scheduler.scheduleAtFixedRate(new SSHKeyCheck(), 0, 5, TimeUnit.MINUTES);
-        scheduler.scheduleAtFixedRate(new SSHKeyCheck(), 0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new SSHKeyCheck(), 0, 5, TimeUnit.MINUTES);
+//        scheduler.scheduleAtFixedRate(new SSHKeyCheck(), 0, 10, TimeUnit.SECONDS);
 		
 	}
 

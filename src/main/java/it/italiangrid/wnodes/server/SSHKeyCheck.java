@@ -40,8 +40,12 @@ public class SSHKeyCheck implements Runnable {
 						+ "/id_rsa.pub";
 				File privateKey =  new File(keyFile);
 				
+				log.error(keyFile);
+				log.error(keyPubFile);
+				
 				if(!privateKey.exists()){
 					log.error("Private key for user "+user + " already deleted.");
+					break;
 				}
 				
 				if(keyIsExpired(keyFile)&&keyIsExpired(keyPubFile)){
@@ -55,13 +59,13 @@ public class SSHKeyCheck implements Runnable {
 			}
 			
 		} catch (WnodesPortletException e) {
-			// TODO Auto-generated catch block
+			log.error(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error(e.getMessage());
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -119,6 +123,9 @@ public class SSHKeyCheck implements Runnable {
 			if(accessDate.compareTo(getDate(before))<=0)
 				return true;
 		
+		}else{
+			
+			log.error("File: " + filename + " don't exist.");
 		}
 		return false;
 	}

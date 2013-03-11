@@ -152,14 +152,15 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 				if ((!line.contains("Image Details"))
 						&& (!line.contains("hostname")) && (!line.isEmpty())) {
+					log.error(line);
 					StringTokenizer st = new StringTokenizer(line);
 					List<String> results = new ArrayList<String>();
 					while (st.hasMoreTokens()) {
 						results.add(st.nextToken());
 					}
-					vm = new VirtualMachine(uuid, "gridlab04.cnaf.infn.it",
+					vm = new VirtualMachine(uuid, "gridlab04.cnaf.infn.it", //results.get(0),
 							results.get(2), results.get(4), results.get(3),
-							results.get(1), "0.0"); //results.get(0)
+							"ACTIVE", "0.0"); //"gridlab04.cnaf.infn.it" results.get(1)
 					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}
