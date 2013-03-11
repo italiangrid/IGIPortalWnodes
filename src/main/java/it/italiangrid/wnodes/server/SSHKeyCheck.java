@@ -45,16 +45,20 @@ public class SSHKeyCheck implements Runnable {
 				
 				if(!privateKey.exists()){
 					log.error("Private key for user "+user + " already deleted.");
-					break;
+					
+				}else{
+				
+					if(keyIsExpired(keyFile)&&keyIsExpired(keyPubFile)){
+						
+						privateKey.delete();
+						
+						log.error("Private key for user "+user + " successfully deleted.");
+						
+					}else{
+						log.error("Keys for user "+user + " valid.");
+					}
 				}
 				
-				if(keyIsExpired(keyFile)&&keyIsExpired(keyPubFile)){
-					
-					privateKey.delete();
-					
-					log.error("Private key for user "+user + " successfully deleted.");
-					
-				}
 				
 			}
 			

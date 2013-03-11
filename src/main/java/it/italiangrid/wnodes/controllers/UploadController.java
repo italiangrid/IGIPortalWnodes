@@ -96,14 +96,16 @@ public class UploadController {
 			
 			try {
 				String users = WnodesConfig.getProperties("active.users");
-				
+				if(users.contains(";"+user.getUserId())){
+					users = users.replaceAll(";"+user.getUserId(), "");
+				}
 				if(users.contains(user.getUserId()+";")){
 					users = users.replaceAll(user.getUserId()+";", "");
 				}
 				if(users.contains(Long.toString(user.getUserId()))){
 					users = users.replaceAll(Long.toString(user.getUserId()), "");
 				}
-				
+//				users= "34249";
 				WnodesConfig.setProperties("active.users", users);
 			} catch (WnodesPortletException e) {
 				// TODO Auto-generated catch block
