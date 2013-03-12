@@ -60,8 +60,8 @@
 	{
 
 	        var display = "<div class=\"tag\">" 
-						+"<div id=\"tag_info_"+aData[0]+"\" class=\"description\" onclick=\"change('"+aData[0]+"');\">"
-						+"<div class=\"vmName\"><img src=\"<%=request.getContextPath()%>/images/cd.png\" width=\"24px\" /> "+aData[0]+"</div> <div id=\"icon_"+aData[0]+"\" class=\"vmIcon\"><img src=\"<%=request.getContextPath()%>/images/Add.png\" width=\"24px\"/></div>"
+						+"<div id=\"tag_info_"+aData[9]+"\" class=\"description\" onclick=\"change('"+aData[9]+"');\">"
+						+"<div class=\"vmName\"><img src=\"<%=request.getContextPath()%>/images/cd.png\" width=\"24px\" /> "+aData[0]+"</div> <div id=\"icon_"+aData[9]+"\" class=\"vmIcon\"><img src=\"<%=request.getContextPath()%>/images/Add.png\" width=\"24px\"/></div>"
 						+"<div class=\"clear\"></div>"
 						+"<p><strong>OS</strong>: "+aData[1]+" : "+aData[2]+" : "+aData[3]+"<br/>"
 						+"<strong>Endorser</strong>: "+aData[4]+"<br/>"
@@ -89,7 +89,8 @@
 				                 { "bSearchable": true, "bVisible": false, "aTargets": [5] }, //description
 				                 { "bSearchable": false, "bVisible": false, "aTargets": [6] }, //identifier
 				                 { "bSearchable": false, "bVisible": false, "aTargets": [7] }, //div
-				                 { "bSearchable": false, "bVisible": false, "aTargets": [8] } //div
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [8] }, //div
+				                 { "bSearchable": false, "bVisible": false, "aTargets": [9] } //divName
 				                 ]
 				                 
 			});
@@ -238,6 +239,7 @@
 			            <th>identifier</th>
 			            <th>addDiv</th>
 			            <th>addUrl</th>
+			            <th>divName</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -251,10 +253,10 @@
 			    			<td>${t.description }</td>
 			    			<td>${t.identifier }</td>
 			    			<td>
-								<div id="settings_${t.name }" class="settings">
+								<div id="settings_${fn:replace(t.name,'.','_') }" class="settings">
 											<div class="info">
 											
-											<aui:form id="t_${t.name }" name="t_${t.name }" commandName="vm" action="${addUrl}">	
+											<aui:form id="t_${fn:replace(t.name,'.','_') }" name="t_${fn:replace(t.name,'.','_') }" commandName="vm" action="${addUrl}">	
 												<aui:input type="hidden" name="tag" value="${t.name }"/>
 												<aui:input type="hidden" name="identifier" value="${t.identifier }"/>
 												<aui:input type="hidden" name="endorser" value="${t.endorser }"/>
@@ -264,7 +266,7 @@
 															<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
 														</c:forEach>
 													</aui:select>
-													<div id="vm_info_${t.name }">
+													<div id="vm_info_${fn:replace(t.name,'.','_') }">
 														CORES: ${marketPlace.sizes[0].cores }<br/>MEMORY: ${marketPlace.sizes[0].memory }<br/>DISK: ${marketPlace.sizes[0].disk }
 												</div>
 												</div>
@@ -315,6 +317,7 @@
 										</div>
 							</td>
 							<td>${addUrl }</td>
+							<td>${fn:replace(t.name,'.','_') }</td>
 			       		</tr>
 			    	</c:forEach>
 			     </tbody>
