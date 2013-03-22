@@ -1,17 +1,25 @@
 package it.italiangrid.wnodes.utils.impl;
 
+import it.italiangrid.portal.dbapi.domain.SshKeys;
 import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.SshKeysService;
 import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.KeyPair;
+import it.italiangrid.wnodes.utils.Encrypter;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
 import it.italiangrid.wnodes.utils.WnodesConfig;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -243,6 +251,31 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Delete ssh key pair.
+	 */
+	public void destroyKeyPair(SshKeysService sshKeysService, UserInfo userInfo) {
+		// TODO Auto-generated method stub
+		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		String keyPub = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa.pub";
+		log.info("keyFile = " + key);
+		log.info("keyPubFile = " + keyPub);
+
+		File keyFile = new File(key);
+		File keyFilePub = new File(keyPub);
+		
+		if(keyFile.exists())
+			keyFile.delete();
+		
+		if(keyFilePub.exists())
+			keyFilePub.delete();
+		
+		SshKeys sshKey = sshKeysService.findByUserInfo(userInfo);
+		sshKeysService.delete(sshKey);
+	}
 
 	public boolean sshKeyPubExistOnly() {
 		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
@@ -262,6 +295,7 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 
 	public boolean uploadKeys() {
 		boolean status = false;
+		
 		String key = System.getProperty("java.io.tmpdir") + "/users/" + userId
 				+ "/id_rsa";
 		String proxy = System.getProperty("java.io.tmpdir") + "/users/" + userId
@@ -290,9 +324,7 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 					stderr));
 			while ((line = brCleanUp.readLine()) != null) {
 
-//				if (!line.contains("....")) {
-					log.error("[Stderr] " + line);
-//				}
+				log.error("[Stderr] " + line);
 			}
 			
 		} catch (IOException e) {
@@ -302,6 +334,44 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 			status = false;
 			e.printStackTrace();
 		}
+
+		return status;
+	}
+	
+	public boolean uploadKeys(SshKeysService sshKeysService, UserInfo userInfo) {
+		boolean status = false;
+		
+		String keyFileName = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		
+		File keyFile = new File(keyFileName);
+		
+		try {
+			FileInputStream fis = new FileInputStream(keyFileName);
+			byte[] key = new byte[(int) keyFile.length()];
+			fis.read(key);
+			fis.close();
+			
+			Encrypter encrypter = new AESEncrypterImpl(userInfo.getPersistentId());
+			
+			
+			SshKeys sshKey = new SshKeys(userInfo, encrypter.encrypt(key));
+//			SshKeys sshKey = new SshKeys(userInfo, "pippo".getBytes());
+			sshKeysService.save(sshKey);
+			
+			status = true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 
 		return status;
 	}
@@ -351,6 +421,34 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 			e.printStackTrace();
 		} catch (WnodesPortletException e) {
 			status = false;
+			e.printStackTrace();
+		}
+
+		return status;
+	}
+	
+	public boolean downloadKeys(SshKeysService sshKeysService, UserInfo userInfo) {
+		boolean status = false;
+		String keyFileName = System.getProperty("java.io.tmpdir") + "/users/" + userId
+				+ "/id_rsa";
+		SshKeys sshKey = sshKeysService.findByUserInfo(userInfo);
+		
+		try {
+			Encrypter encrypter = new AESEncrypterImpl(userInfo.getPersistentId());
+
+			FileOutputStream fos = new FileOutputStream(keyFileName);
+			fos.write(encrypter.decrypt(sshKey.getKeyField()));
+			fos.close();
+			
+			status = true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

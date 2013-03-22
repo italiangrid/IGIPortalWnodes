@@ -211,13 +211,15 @@
 </style>
 
 <div id="containerWnodes">
-	<div id="presentationWnodes">Choose an Instance</div>
+	<div id="presentationWnodes">Choose an Image</div>
 	<div id="contentWnodes">
 		<liferay-ui:success key="vm-created" message="vm-created" />
 		<liferay-ui:error key="portal-exception" message="exception" />
 		<liferay-ui:error key="system-exception" message="exception" />
 		<liferay-ui:error key="vm-not-created" message="vm-not-created" />
 		<liferay-ui:error key="vo-not-supported" message="vo-not-supported" />
+		<liferay-ui:error key="no-metadata-retrieved" message="no-metadata-retrieved" />
+
 
 		<portlet:actionURL var="addUrl">
 			<portlet:param name="myaction" value="addVirtualMachine" />
@@ -226,6 +228,8 @@
 			<portlet:param name="myaction" value="showList" />
 		</portlet:renderURL>
 		<aui:fieldset>
+			
+			<c:if test="${marketPlace!=null }">
 			
 			<table id="search_table" class="search hide">
 			    <thead>
@@ -261,14 +265,22 @@
 												<aui:input type="hidden" name="identifier" value="${t.identifier }"/>
 												<aui:input type="hidden" name="endorser" value="${t.endorser }"/>
 												<div class="col">
-													<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${t.name }')">
-														<c:forEach var="size" items="${marketPlace.sizes }">
-															<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
+													<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${fn:replace(t.name,'.','_') }')">
+														<c:forEach var="resourceProvider" items="${marketPlace.resourceProviders }">
+															<c:if test="${resourceProvider.name==t.resourceProvider }">
+																<c:forEach var="size" items="${resourceProvider.sizes }">
+																	<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
+																</c:forEach>
+															</c:if>
 														</c:forEach>
 													</aui:select>
 													<div id="vm_info_${fn:replace(t.name,'.','_') }">
-														CORES: ${marketPlace.sizes[0].cores }<br/>MEMORY: ${marketPlace.sizes[0].memory }<br/>DISK: ${marketPlace.sizes[0].disk }
-												</div>
+														<c:forEach var="resourceProvider" items="${marketPlace.resourceProviders }">
+															<c:if test="${resourceProvider.name==t.resourceProvider }">
+																CORES: ${resourceProvider.sizes[0].cores }<br/>MEMORY: ${resourceProvider.sizes[0].memory }<br/>DISK: ${resourceProvider.sizes[0].disk }
+															</c:if>
+														</c:forEach>
+													</div>
 												</div>
 												<div class="col">
 													<aui:select name="qta" label="How many Instances">
@@ -284,7 +296,7 @@
 												
 												<c:set var="check" value="false"/>
 												<c:forEach var="vo" items="${vos }">
-													<c:if test="${vo=='gridit' }">
+													<c:if test="${vo==cloudVo }">
 														<c:set var="check" value="true"/>
 													</c:if>
 												</c:forEach>
@@ -292,8 +304,8 @@
 												<c:if test="${check=='true' }">
 													<div class="col">
 														<div style="padding-top: 10px;">
-															<strong>Selected VO:</strong> <br/>gridit
-															<aui:input type="hidden" name="vo" value="gridit"></aui:input>
+															<strong>Selected VO:</strong> <br/>${cloudVo }
+															<aui:input type="hidden" name="vo" value="${cloudVo }"></aui:input>
 														</div>
 													</div>
 												
@@ -322,7 +334,7 @@
 			    	</c:forEach>
 			     </tbody>
 			</table>
-			
+			</c:if>
 			<aui:button-row style="padding-top: 15px;">
 			<aui:button type="cancel" value="View Instances List"
 							onClick="location.href='${backUrl}';"></aui:button>

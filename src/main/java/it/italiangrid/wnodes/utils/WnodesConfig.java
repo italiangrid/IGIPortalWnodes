@@ -26,7 +26,7 @@ public class WnodesConfig {
 						+ "/content/Wnodes.properties");
 
 				Properties prop = new Properties();
-
+				
 				prop.load(inStream);
 
 				inStream.close();

@@ -1,6 +1,7 @@
 package it.italiangrid.wnodes.controllers;
 
 import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.SshKeysService;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
@@ -45,6 +46,9 @@ public class ActionsController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
+	
+	@Autowired
+	private SshKeysService sshKeysService;
 
 	/**
 	 * Logger of the class.
@@ -228,13 +232,12 @@ public class ActionsController {
 			
 			UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
 			boolean statusCreation = service.createSshKey(userInfo);
+			boolean statusStoreKey = service.uploadKeys(sshKeysService, userInfo);
 			
-			boolean statusMyProxy = service.uploadKeys();
-			
-			if (statusCreation&&statusMyProxy)
+			if (statusCreation&&statusStoreKey)
 				SessionMessages.add(request, "added-ssh-key");
 			
-			if(!statusCreation||!statusMyProxy){
+			if(!statusCreation||!statusStoreKey){
 				SessionErrors.add(request, "system-exception");
 				
 				PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);

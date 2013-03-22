@@ -68,7 +68,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		try {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
-			String cmd = "/usr/bin/wnodes/cli/wnodes_list_images";
+			String cmd = "/usr/bin/wnodes/cli/list_instances";
 			log.info("Command {}.", cmd);
 
 			List<VirtualMachine> vms = new ArrayList<VirtualMachine>();
@@ -83,9 +83,11 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 			while (((line = output.readLine()) != null)) {
 
-				log.info("[Stdout] " + line);
-				vms.add(getVirtualMachine(userId, line));
-
+				log.error("[Stdout] " + line);
+				if(line.contains("https://")){
+					vms.add(getVirtualMachine(userId, line));
+					log.error("added");
+				}
 			}
 			output.close();
 
@@ -132,7 +134,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		try {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
-			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_list_image", "-l",
+			String[] cmd = { "/usr/bin/wnodes/cli/list_instance", "-l",
 					uuid };
 			log.info("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
 
@@ -150,17 +152,24 @@ public class WnodesServiceCLIImpl implements WnodesService {
 
 				log.info("[Stdout] " + line);
 
-				if ((!line.contains("Image Details"))
+				if ((!line.contains("Instance Details"))
 						&& (!line.contains("hostname")) && (!line.isEmpty())) {
 					log.error(line);
 					StringTokenizer st = new StringTokenizer(line);
 					List<String> results = new ArrayList<String>();
+					
+					
+					
+					
 					while (st.hasMoreTokens()) {
 						results.add(st.nextToken());
+						
 					}
-					vm = new VirtualMachine(uuid, "gridlab04.cnaf.infn.it", //results.get(0),
+					for(String s : results)
+						log.error("###### " +s);
+					vm = new VirtualMachine(uuid, results.get(0),
 							results.get(2), results.get(4), results.get(3),
-							"ACTIVE", "0.0"); //"gridlab04.cnaf.infn.it" results.get(1)
+							results.get(1), "0.0"); //"gridlab04.cnaf.infn.it" 
 					log.info(vm.getSpeed());
 					log.info("[Stdout] " + vm.toString());
 				}
@@ -213,7 +222,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
-			String[] cmd = { "/usr/bin/wnodes/cli/create_image", "--imageid",
+			String[] cmd = { "/usr/bin/wnodes/cli/create_instance", "--imageid",
 					vm.getTag()+","+vm.getIdentifier()+","+vm.getEndorser(), "-s", vm.getSize(), "--vo", vm.getVo() };
 			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2] + " "
 					+ cmd[3] + " " + cmd[4] + " " + cmd[5] + " " + cmd[6]);	
@@ -289,7 +298,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
-			String[] cmd = { "/usr/bin/wnodes/cli/wnodes_delete_image", "--locations="+uuid };
+			String[] cmd = { "/usr/bin/wnodes/cli/delete_instance", "--locations="+uuid };
 			log.error("Command {}.", cmd[0] + " " + cmd[1]);
 
 			Process p = Runtime.getRuntime().exec(cmd, null, dir);

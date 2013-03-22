@@ -4,9 +4,11 @@ import it.italiangrid.portal.dbapi.domain.UserInfo;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesInfoService;
 import it.italiangrid.wnodes.core.impl.WnodesInfoServiceCLIImpl;
+import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.MarketPlace;
 import it.italiangrid.wnodes.model.VirtualMachineCreation;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.WnodesConfig;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
@@ -80,39 +83,39 @@ public class AddController {
 		return null;
 	}
 
-	/**
-	 * Attribute mapping for the "tags" variable displayed in the page.
-	 * 
-	 * @param request
-	 *            - The HTTP request.
-	 * @return Return the list of the tags supported by WNoDes.
-	 */
-	@ModelAttribute("tags")
-	public List<String> getTags(RenderRequest request) {
-		User user = (User) request.getAttribute(WebKeys.USER);
-		WnodesInfoService infoService;
-		// if (user != null)
-		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
-				.getUserId()));
-		return infoService.getTags();
-	}
-
-	/**
-	 * Attribute mapping for the "sizes" variable displayed in the page.
-	 * 
-	 * @param request
-	 *            - The HTTP request.
-	 * @return Return the list of the sizes supported by WNoDes.
-	 */
-	@ModelAttribute("sizes")
-	public List<String> getSizes(RenderRequest request) {
-		User user = (User) request.getAttribute(WebKeys.USER);
-		WnodesInfoService infoService;
-		// if (user != null)
-		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
-				.getUserId()));
-		return infoService.getSizes();
-	}
+//	/**
+//	 * Attribute mapping for the "tags" variable displayed in the page.
+//	 * 
+//	 * @param request
+//	 *            - The HTTP request.
+//	 * @return Return the list of the tags supported by WNoDes.
+//	 */
+//	@ModelAttribute("tags")
+//	public List<String> getTags(RenderRequest request) {
+//		User user = (User) request.getAttribute(WebKeys.USER);
+//		WnodesInfoService infoService;
+//		// if (user != null)
+//		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
+//				.getUserId()));
+//		return infoService.getTags();
+//	}
+//
+//	/**
+//	 * Attribute mapping for the "sizes" variable displayed in the page.
+//	 * 
+//	 * @param request
+//	 *            - The HTTP request.
+//	 * @return Return the list of the sizes supported by WNoDes.
+//	 */
+//	@ModelAttribute("sizes")
+//	public List<String> getSizes(RenderRequest request) {
+//		User user = (User) request.getAttribute(WebKeys.USER);
+//		WnodesInfoService infoService;
+//		// if (user != null)
+//		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
+//				.getUserId()));
+//		return infoService.getSizes();
+//	}
 	
 	/**
 	 * Attribute mapping for the "sizes" variable displayed in the page.
@@ -128,7 +131,14 @@ public class AddController {
 		// if (user != null)
 		infoService = new WnodesInfoServiceCLIImpl(Long.toString(user
 				.getUserId()));
-		return infoService.getMarketPlaces();
+		try {
+			return infoService.getMarketPlaces();
+		} catch (WnodesPortletException e) {
+			SessionErrors.add(request, e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/**
@@ -172,6 +182,17 @@ public class AddController {
 		}
 
 		return null;
+	}
+	
+	@ModelAttribute("cloudVo")
+	public String getCloudVo(){
+		try {
+			return WnodesConfig.getProperties("cloud.vo");
+		} catch (WnodesPortletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

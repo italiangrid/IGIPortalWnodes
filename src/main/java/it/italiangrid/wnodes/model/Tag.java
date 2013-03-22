@@ -9,6 +9,7 @@ public class Tag {
 	private String description;
 	private String endorser;
 	private String identifier;
+	private String resourceProvider;
 
 	/**
 	 * @param name
@@ -19,7 +20,7 @@ public class Tag {
 	 * @param endorser
 	 */
 	public Tag(String name, String architecture, String os, String osVersion,
-			String description, String endorser, String identifier) {
+			String description, String endorser, String identifier, String resourceProvider) {
 		super();
 		this.name = name;
 		this.architecture = architecture;
@@ -28,6 +29,7 @@ public class Tag {
 		this.description = description;
 		this.endorser = endorser;
 		this.identifier = identifier;
+		this.resourceProvider = resourceProvider;
 	}
 
 	public String getName() {
@@ -116,6 +118,20 @@ public class Tag {
 		this.identifier = identifier;
 	}
 
+	/**
+	 * @return the resourceProvider
+	 */
+	public String getResourceProvider() {
+		return resourceProvider;
+	}
+
+	/**
+	 * @param resourceProvider the resourceProvider to set
+	 */
+	public void setResourceProvider(String resourceProvider) {
+		this.resourceProvider = resourceProvider;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -124,6 +140,6 @@ public class Tag {
 		return "Tag [name=" + name + ", architecture=" + architecture + ", os="
 				+ os + ", osVersion=" + osVersion + ", description="
 				+ description + ", endorser=" + endorser + ", identifier="
-				+ identifier + "]";
+				+ identifier + ", resourceProvider=" + resourceProvider + "]";
 	}
 }

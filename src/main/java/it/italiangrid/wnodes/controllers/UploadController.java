@@ -1,6 +1,7 @@
 package it.italiangrid.wnodes.controllers;
 
 import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.SshKeysService;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.KeyPair;
@@ -34,6 +35,9 @@ public class UploadController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
+	@Autowired
+	private SshKeysService sshKeysService;
+	
 	private static final Logger log = Logger.getLogger(UploadController.class);
 	
 	/**
@@ -58,6 +62,7 @@ public class UploadController {
 			    try {
 			    	UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
 					service.storeKeys(keyPair, userInfo);
+					service.uploadKeys(sshKeysService, userInfo);
 					SessionMessages.add(request, "keys-uploaded-successfully");
 					
 					String users = WnodesConfig.getProperties("active.users");
@@ -91,9 +96,11 @@ public class UploadController {
 	public void destroyKeypair(ActionRequest request, ActionResponse response){
 		User user = (User) request.getAttribute(WebKeys.USER);
 		if (user != null) {
+			UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
 			UserServiceUtil service = new UserServiceUtilImpl(user.getUserId());
-			service.destroyKeyPair();
-			
+//			service.destroyKeyPair();
+			service.destroyKeyPair(sshKeysService, userInfo);
+		
 			try {
 				String users = WnodesConfig.getProperties("active.users");
 				if(users.contains(";"+user.getUserId())){

@@ -22,16 +22,16 @@ public class SSHKeyCheck implements Runnable {
 
 	public void run() {
 		
-		log.error("Check SSH Key");
+		log.debug("Check SSH Key");
 		
 		try {
 			String[] users = WnodesConfig.getProperties("active.users").split(";");
 			
-			log.error("Check ssh keys for users: " + WnodesConfig.getProperties("active.users"));
+			log.debug("Check ssh keys for users: " + WnodesConfig.getProperties("active.users"));
 			
 			for(String user: users){
 				
-				log.error("user: " + user);
+				log.debug("user: " + user);
 				
 				String keyFile = System.getProperty("java.io.tmpdir") + "/users/" + user
 						+ "/id_rsa";
@@ -40,11 +40,11 @@ public class SSHKeyCheck implements Runnable {
 						+ "/id_rsa.pub";
 				File privateKey =  new File(keyFile);
 				
-				log.error(keyFile);
-				log.error(keyPubFile);
+				log.debug(keyFile);
+				log.debug(keyPubFile);
 				
 				if(!privateKey.exists()){
-					log.error("Private key for user "+user + " already deleted.");
+					log.debug("Private key for user "+user + " already deleted.");
 					
 				}else{
 				
@@ -52,10 +52,10 @@ public class SSHKeyCheck implements Runnable {
 						
 						privateKey.delete();
 						
-						log.error("Private key for user "+user + " successfully deleted.");
+						log.debug("Private key for user "+user + " successfully deleted.");
 						
 					}else{
-						log.error("Keys for user "+user + " valid.");
+						log.debug("Keys for user "+user + " valid.");
 					}
 				}
 				
@@ -63,13 +63,13 @@ public class SSHKeyCheck implements Runnable {
 			}
 			
 		} catch (WnodesPortletException e) {
-			log.error(e.getMessage());
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			log.error(e.getMessage());
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		} catch (ParseException e) {
-			log.error(e.getMessage());
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -96,40 +96,40 @@ public class SSHKeyCheck implements Runnable {
 			String time = "";
 	
 			while ((line = output.readLine()) != null) {
-				log.error("[Stdout] " + line);
+				log.debug("[Stdout] " + line);
 				time = line;
 				
 			}
 			output.close();
 			time = time.substring(0, 23)+time.substring(29);
-			log.error("Sono qui!! -->" + time + "<--");
+			log.debug("Sono qui!! -->" + time + "<--");
 													   //yyyy-MM-dd HH:mm:ss.SSS
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS ZZZZ");
 			
 			Date accessDate=sdf.parse(time);
-			log.error("now: " +getDate(0));
-			log.error("parsed data: " + accessDate);
+			log.debug("now: " +getDate(0));
+			log.debug("parsed data: " + accessDate);
 			
 			BufferedReader brCleanUp = new BufferedReader(new InputStreamReader(
 					stderr));
 			while ((line = brCleanUp.readLine()) != null) {
-					log.error("[Stderr] " + line);
+					log.debug("[Stderr] " + line);
 			}
 			
 			String expireTime = WnodesConfig.getProperties("ssh.expire.time");
 			
 			int before = Integer.parseInt(expireTime)*-1;
 			
-			log.error("compare with: " +getDate(before));
+			log.debug("compare with: " +getDate(before));
 			
-			log.error("result: "+ accessDate.compareTo(getDate(before)));
+			log.debug("result: "+ accessDate.compareTo(getDate(before)));
 			
 			if(accessDate.compareTo(getDate(before))<=0)
 				return true;
 		
 		}else{
 			
-			log.error("File: " + filename + " don't exist.");
+			log.debug("File: " + filename + " don't exist.");
 		}
 		return false;
 	}

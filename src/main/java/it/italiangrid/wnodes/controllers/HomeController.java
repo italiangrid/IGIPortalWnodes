@@ -3,11 +3,14 @@ package it.italiangrid.wnodes.controllers;
 import java.util.List;
 
 import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.SshKeysService;
 import it.italiangrid.portal.dbapi.services.UserInfoService;
 import it.italiangrid.wnodes.core.WnodesService;
 import it.italiangrid.wnodes.core.impl.WnodesServiceCLIImpl;
+import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.VirtualMachine;
 import it.italiangrid.wnodes.utils.UserServiceUtil;
+import it.italiangrid.wnodes.utils.WnodesConfig;
 import it.italiangrid.wnodes.utils.impl.UserServiceUtilImpl;
 
 import javax.portlet.PortletConfig;
@@ -56,6 +59,8 @@ public class HomeController {
 	@Autowired
 	private UserInfoService userInfoService;
 
+	@Autowired
+	private SshKeysService sshKeysService;
 	/**
 	 * Render Mapping of the first page displayed.
 	 * 
@@ -75,17 +80,24 @@ public class HomeController {
 				log.info("User logged in.");
 				UserServiceUtil check = new UserServiceUtilImpl(
 						user.getUserId());
-				if (check.getActiveProxy().isEmpty()) {
-					log.info("User haven't proxy.");
-					return "error-proxy";
+				List<String> proxyList = check.getActiveProxy();
+				for(String proxy: proxyList){
+					
+					if (proxy.equals(WnodesConfig.getProperties("cloud.vo"))) {
+						log.info("User have proxy.");
+						return "home";
+					}
 				}
-				log.info("User have proxy.");
-				return "home";
+				log.info("User haven't proxy.");
+				return "error-proxy";
 			}
 
 		} catch (PortalException e) {
 			e.printStackTrace();
 		} catch (SystemException e) {
+			e.printStackTrace();
+		} catch (WnodesPortletException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -146,8 +158,9 @@ public class HomeController {
 					
 					//if myproxy ok return true, else print error and return false
 					UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
-					boolean myproxyStatus = service.downloadKeys(userInfo);
-					if(myproxyStatus){
+					boolean retrieveStatus = service.downloadKeys(sshKeysService, userInfo);
+//					boolean retrieveStatus = service.downloadKeys(userInfo);
+					if(retrieveStatus){
 						return true;
 					}
 					SessionErrors.add(request, "myproxy-error");
@@ -188,8 +201,9 @@ public class HomeController {
 				
 				//if myproxy ok return true, else print error and return false
 				UserInfo userInfo = userInfoService.findByMail(user.getEmailAddress());
-				boolean myproxyStatus = check.downloadKeys(userInfo);
-				if(!myproxyStatus){
+				boolean retrieveStatus = check.downloadKeys(sshKeysService, userInfo);
+//				boolean retrieveStatus = check.downloadKeys(userInfo);
+				if(!retrieveStatus){
 					SessionErrors.add(request, "myproxy-error");
 					PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 					SessionMessages.add(request, portletConfig.getPortletName() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
@@ -202,6 +216,17 @@ public class HomeController {
 		WnodesService wnodesService = new WnodesServiceCLIImpl();
 		return wnodesService.getVirtualMachines(userId);
 
+	}
+	
+	@ModelAttribute("cloudVo")
+	public String getCloudVo(){
+		try {
+			return WnodesConfig.getProperties("cloud.vo");
+		} catch (WnodesPortletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

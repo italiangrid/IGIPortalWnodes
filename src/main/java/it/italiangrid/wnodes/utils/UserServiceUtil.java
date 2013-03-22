@@ -1,6 +1,7 @@
 package it.italiangrid.wnodes.utils;
 
 import it.italiangrid.portal.dbapi.domain.UserInfo;
+import it.italiangrid.portal.dbapi.services.SshKeysService;
 import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.KeyPair;
 
@@ -51,11 +52,14 @@ public interface UserServiceUtil {
 	 * Delete ssh key pair.
 	 */
 	public void destroyKeyPair();
+	public void destroyKeyPair(SshKeysService sshKeysService, UserInfo userInfo);
 
 	public boolean sshKeyPubExistOnly();
 
 	public boolean uploadKeys();
+	public boolean uploadKeys(SshKeysService sshKeysService, UserInfo userInfo);
 	
 	public boolean downloadKeys(UserInfo userInfo);
+	public boolean downloadKeys(SshKeysService sshKeysService, UserInfo userInfo);
 
 }

@@ -1,5 +1,6 @@
 package it.italiangrid.wnodes.core;
 
+import it.italiangrid.wnodes.exception.WnodesPortletException;
 import it.italiangrid.wnodes.model.MarketPlace;
 
 import java.util.List;
@@ -33,7 +34,8 @@ public interface WnodesInfoService {
 	 * the WNoDeS CLI command: size_images_info
 	 * 
 	 * @return Return the list of market place.
+	 * @throws WnodesPortletException 
 	 */
-	public MarketPlace getMarketPlaces();
+	public MarketPlace getMarketPlaces() throws WnodesPortletException;
 
 }

@@ -59,7 +59,7 @@ function create(host, user) {
 			'height' : '600px',
 			'margin' : '50px 10px 0px 10px'
 		},
-		autoConnectURL : "ssh://dmichelotto@" + host + "/?identities=" + user
+		autoConnectURL : "ssh://root@" + host + "/?identities=" + user
 				+ "/id_rsa",
 	});
 

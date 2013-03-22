@@ -6,16 +6,16 @@ import java.util.List;
 public class MarketPlace {
 	
 	private String name;
-	private List<Size> sizes;
+	private List<ResourceProvider> resourceProviders;
 	private List<Tag> tags;
 
 	/**
 	 * @param tags
 	 */
-	public MarketPlace(String name, List<Tag> tags, List<Size> sizes) {
+	public MarketPlace(String name, List<Tag> tags, List<ResourceProvider> resourceProviders) {
 		this.name = name;
 		this.tags = tags;
-		this.sizes = sizes;
+		this.resourceProviders = resourceProviders;
 	}
 
 	/**
@@ -24,7 +24,7 @@ public class MarketPlace {
 	public MarketPlace(String name) {
 		this.name = name;
 		this.tags = new ArrayList<Tag>();
-		this.sizes = new ArrayList<Size>();
+		this.resourceProviders = new ArrayList<ResourceProvider>();
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class MarketPlace {
 	public MarketPlace() {
 		this.name = "";
 		this.tags = new ArrayList<Tag>();
-		this.sizes = new ArrayList<Size>();
+		this.resourceProviders = new ArrayList<ResourceProvider>();
 	}
 
 	/**
@@ -93,38 +93,38 @@ public class MarketPlace {
 	/**
 	 * @return the tags
 	 */
-	public List<Size> getSizes() {
-		return sizes;
+	public List<ResourceProvider> getResourceProviders() {
+		return resourceProviders;
 	}
 
 	/**
 	 * @param tags the tags to set
 	 */
-	public void setSizes(List<Size> sizes) {
-		this.sizes = sizes;
+	public void setResourceProviders(List<ResourceProvider> ResourceProviders) {
+		this.resourceProviders = ResourceProviders;
 	}
 	
 	/**
 	 * @param tag add new tag at the market place
 	 */
 
-	public void addSize(Size size){
-		sizes.add(size);
+	public void addResourceProvider(ResourceProvider ResourceProvider){
+		resourceProviders.add(ResourceProvider);
 	}
 	
 	/**
 	 * @param tag get tag from the market place
 	 */
-	public Size getSize(int index){
-		return sizes.get(index);
+	public ResourceProvider getResourceProvider(int index){
+		return resourceProviders.get(index);
 	}
 	
 	/**
 	 * @param tag get tag from the market place
 	 */
-	public Size getSize(String name){
+	public ResourceProvider getResourceProvider(String name){
 		
-		for(Size s: sizes)
+		for(ResourceProvider s: resourceProviders)
 			if(s.getName().equals(name))
 				return s;
 		return null;
@@ -136,7 +136,7 @@ public class MarketPlace {
 	 */
 	@Override
 	public String toString() {
-		return "MarketPlace [name=" + name + ", sizes=" + sizes + ", tags="
+		return "MarketPlace [name=" + name + ", ResourceProviders=" + resourceProviders + ", tags="
 				+ tags + "]";
 	}
 }
