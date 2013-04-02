@@ -1,6 +1,6 @@
 package it.italiangrid.wnodes.model;
 
-public class Tag {
+public class Image {
 
 	private String name;
 	private String architecture;
@@ -10,6 +10,7 @@ public class Tag {
 	private String endorser;
 	private String identifier;
 	private String resourceProvider;
+	private String platform;
 
 	/**
 	 * @param name
@@ -19,8 +20,8 @@ public class Tag {
 	 * @param description
 	 * @param endorser
 	 */
-	public Tag(String name, String architecture, String os, String osVersion,
-			String description, String endorser, String identifier, String resourceProvider) {
+	public Image(String name, String architecture, String os, String osVersion,
+			String description, String endorser, String identifier, String resourceProvider, String platform) {
 		super();
 		this.name = name;
 		this.architecture = architecture;
@@ -30,6 +31,7 @@ public class Tag {
 		this.endorser = endorser;
 		this.identifier = identifier;
 		this.resourceProvider = resourceProvider;
+		this.platform = platform;
 	}
 
 	public String getName() {
@@ -132,14 +134,29 @@ public class Tag {
 		this.resourceProvider = resourceProvider;
 	}
 
+	/**
+	 * @return the platform
+	 */
+	public String getPlatform() {
+		return platform;
+	}
+
+	/**
+	 * @param platform the platform to set
+	 */
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Tag [name=" + name + ", architecture=" + architecture + ", os="
-				+ os + ", osVersion=" + osVersion + ", description="
+		return "Image [name=" + name + ", architecture=" + architecture
+				+ ", os=" + os + ", osVersion=" + osVersion + ", description="
 				+ description + ", endorser=" + endorser + ", identifier="
-				+ identifier + ", resourceProvider=" + resourceProvider + "]";
+				+ identifier + ", resourceProvider=" + resourceProvider
+				+ ", platform=" + platform + "]";
 	}
 }

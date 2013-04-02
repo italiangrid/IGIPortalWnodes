@@ -228,8 +228,8 @@
 			<portlet:param name="myaction" value="showList" />
 		</portlet:renderURL>
 		<aui:fieldset>
-			
-			<c:if test="${marketPlace!=null }">
+		
+			<c:if test="${marketPlace!=null }">			
 			
 			<table id="search_table" class="search hide">
 			    <thead>
@@ -267,7 +267,7 @@
 												<div class="col">
 													<aui:select name="size" label="Size" onChange="viewSize($(this).val(), 'vm_info_${fn:replace(t.name,'.','_') }')">
 														<c:forEach var="resourceProvider" items="${marketPlace.resourceProviders }">
-															<c:if test="${resourceProvider.name==t.resourceProvider }">
+															<c:if test="${(resourceProvider.name==t.resourceProvider) && (resourceProvider.platform==t.platform) }">
 																<c:forEach var="size" items="${resourceProvider.sizes }">
 																	<aui:option value="${size.name }#${size.cores }#${size.memory }#${size.disk }">${size.name }</aui:option>
 																</c:forEach>
@@ -276,7 +276,7 @@
 													</aui:select>
 													<div id="vm_info_${fn:replace(t.name,'.','_') }">
 														<c:forEach var="resourceProvider" items="${marketPlace.resourceProviders }">
-															<c:if test="${resourceProvider.name==t.resourceProvider }">
+															<c:if test="${(resourceProvider.name==t.resourceProvider) && (resourceProvider.platform==t.platform)  }">
 																CORES: ${resourceProvider.sizes[0].cores }<br/>MEMORY: ${resourceProvider.sizes[0].memory }<br/>DISK: ${resourceProvider.sizes[0].disk }
 															</c:if>
 														</c:forEach>

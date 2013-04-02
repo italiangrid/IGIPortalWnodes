@@ -7,12 +7,12 @@ public class MarketPlace {
 	
 	private String name;
 	private List<ResourceProvider> resourceProviders;
-	private List<Tag> tags;
+	private List<Image> tags;
 
 	/**
 	 * @param tags
 	 */
-	public MarketPlace(String name, List<Tag> tags, List<ResourceProvider> resourceProviders) {
+	public MarketPlace(String name, List<Image> tags, List<ResourceProvider> resourceProviders) {
 		this.name = name;
 		this.tags = tags;
 		this.resourceProviders = resourceProviders;
@@ -23,7 +23,7 @@ public class MarketPlace {
 	 */
 	public MarketPlace(String name) {
 		this.name = name;
-		this.tags = new ArrayList<Tag>();
+		this.tags = new ArrayList<Image>();
 		this.resourceProviders = new ArrayList<ResourceProvider>();
 	}
 
@@ -32,7 +32,7 @@ public class MarketPlace {
 	 */
 	public MarketPlace() {
 		this.name = "";
-		this.tags = new ArrayList<Tag>();
+		this.tags = new ArrayList<Image>();
 		this.resourceProviders = new ArrayList<ResourceProvider>();
 	}
 
@@ -53,14 +53,14 @@ public class MarketPlace {
 	/**
 	 * @return the tags
 	 */
-	public List<Tag> getTags() {
+	public List<Image> getTags() {
 		return tags;
 	}
 
 	/**
 	 * @param tags the tags to set
 	 */
-	public void setTags(List<Tag> tags) {
+	public void setTags(List<Image> tags) {
 		this.tags = tags;
 	}
 	
@@ -68,23 +68,23 @@ public class MarketPlace {
 	 * @param tag add new tag at the market place
 	 */
 
-	public void addTag(Tag tag){
+	public void addTag(Image tag){
 		tags.add(tag);
 	}
 	
 	/**
 	 * @param tag get tag from the market place
 	 */
-	public Tag getTag(int index){
+	public Image getTag(int index){
 		return tags.get(index);
 	}
 	
 	/**
 	 * @param tag get tag from the market place
 	 */
-	public Tag getTag(String name){
+	public Image getTag(String name){
 		
-		for(Tag t: tags)
+		for(Image t: tags)
 			if(t.getName().equals(name))
 				return t;
 		return null;

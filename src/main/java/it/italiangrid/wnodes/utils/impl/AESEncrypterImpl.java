@@ -1,13 +1,8 @@
 package it.italiangrid.wnodes.utils.impl;
 
-import java.math.BigInteger;
-import java.security.spec.AlgorithmParameterSpec;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-
 import it.italiangrid.wnodes.utils.Encrypter;
 
 public class AESEncrypterImpl implements Encrypter {

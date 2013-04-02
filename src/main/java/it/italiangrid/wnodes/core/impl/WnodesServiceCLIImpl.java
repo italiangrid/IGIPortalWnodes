@@ -134,7 +134,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 		try {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
-			String[] cmd = { "/usr/bin/wnodes/cli/list_instance", "-l",
+			String[] cmd = { "/usr/bin/wnodes/cli/show_instance", "-l",
 					uuid };
 			log.info("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
 
@@ -232,13 +232,17 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			
 			Set<String> list  = sysEnv.keySet();
 			Iterator<String> iter = list.iterator();
-			String enviroment = "PYTHONPATH=/var/lib/stratuslab/python/";			
+			String enviroment = "";			
 			while(iter.hasNext()) {
 			     String key = iter.next();
 			     String value = sysEnv.get(key);
 			     enviroment +="@@"+key+"="+value;
 			}
+			enviroment += "@@PYTHONPATH=/var/lib/stratuslab/python/";
 			String[] envp = enviroment.split("@@");
+			
+			for(int i=0; i<envp.length; i++)
+					log.error("ENVP: " + envp[i]);
 			
 			Process p = Runtime.getRuntime().exec(cmd, envp, dir);
 

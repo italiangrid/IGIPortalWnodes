@@ -9,6 +9,10 @@ public class ResourceProvider {
 	 */
 	private String name;
 	/**
+	 * Type of resource provider
+	 */
+	private String platform;
+	/**
 	 * Instance sizes of relative Resource Provider
 	 */
 	private List<Size> sizes;
@@ -16,9 +20,10 @@ public class ResourceProvider {
 	 * @param name
 	 * @param sizes
 	 */
-	public ResourceProvider(String name, List<Size> sizes) {
+	public ResourceProvider(String name, String platform, List<Size> sizes) {
 		super();
 		this.name = name;
+		this.platform = platform;
 		this.sizes = sizes;
 	}
 	/**
@@ -32,6 +37,18 @@ public class ResourceProvider {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * @return the platform
+	 */
+	public String getPlatform() {
+		return platform;
+	}
+	/**
+	 * @param platform the platform to set
+	 */
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 	/**
 	 * @return the sizes
@@ -75,7 +92,8 @@ public class ResourceProvider {
 	 */
 	@Override
 	public String toString() {
-		return "ResourceProvider [name=" + name + ", sizes=" + sizes + "]";
+		return "ResourceProvider [name=" + name + ", platform=" + platform
+				+ ", sizes=" + sizes + "]";
 	}
 	
 }
