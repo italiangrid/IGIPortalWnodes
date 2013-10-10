@@ -111,9 +111,7 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 
 		if (!keyFile.exists()) {
 			
-			String password = userInfo.getPersistentId();
-			
-			String[] cmd = { "/usr/bin/ssh-keygen", "-t", "rsa", "-N", password,
+			String[] cmd = { "/usr/bin/ssh-keygen", "-t", "rsa", "-N", "",
 					"-f", key };
 			try {
 				Process p = Runtime.getRuntime().exec(cmd);
@@ -192,22 +190,22 @@ public class UserServiceUtilImpl implements UserServiceUtil {
 			
 			Runtime.getRuntime().exec("chmod 600 "+key);
 			
-			String password = userInfo.getPersistentId();
-			
-			String[] cmd = { "/usr/bin/ssh-keygen", "-p", "-P", keyPair.getPassword(), "-N", password,
-					"-f", key };
-			
-			Process p = Runtime.getRuntime().exec(cmd);
-			printOutput(p.getInputStream(), p.getErrorStream());
+//			String password = userInfo.getPersistentId();
+//			
+//			String[] cmd = { "/usr/bin/ssh-keygen", "-p", "-P", keyPair.getPassword(), "-N", password,
+//					"-f", key };
+//			
+//			Process p = Runtime.getRuntime().exec(cmd);
+//			printOutput(p.getInputStream(), p.getErrorStream());
 			
 			if(!uploadKeys())
 				throw new WnodesPortletException("Proxy Problem");
 			
-			String[] cmd2 = { "/usr/bin/ssh-keygen", "-p", "-P", password, "-N", "",
-					"-f", key };
-			
-			Process p2 = Runtime.getRuntime().exec(cmd2);
-			printOutput(p2.getInputStream(), p2.getErrorStream());
+//			String[] cmd2 = { "/usr/bin/ssh-keygen", "-p", "-P", password, "-N", "",
+//					"-f", key };
+//			
+//			Process p2 = Runtime.getRuntime().exec(cmd2);
+//			printOutput(p2.getInputStream(), p2.getErrorStream());
 				
 		}
 		

@@ -139,7 +139,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			log.info("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2]);
 
 			VirtualMachine vm = new VirtualMachine();
-			Process p = Runtime.getRuntime().exec(cmd, null, dir);
+			Process p = Runtime.getRuntime().exec(cmd[0] + " " + cmd[1] + " " + cmd[2], null, dir);
 
 			InputStream stdout = p.getInputStream();
 			InputStream stderr = p.getErrorStream();
@@ -223,7 +223,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
 			String[] cmd = { "/usr/bin/wnodes/cli/create_instance", "--imageid",
-					vm.getTag()+","+vm.getIdentifier()+","+vm.getEndorser(), "-s", vm.getSize(), "--vo", vm.getVo() };
+					vm.getTag()+","+vm.getIdentifier()+","+vm.getEndorser(), "--imagename", vm.getSize(), "--vo", vm.getVo() };
 			log.error("Command {}.", cmd[0] + " " + cmd[1] + " " + cmd[2] + " "
 					+ cmd[3] + " " + cmd[4] + " " + cmd[5] + " " + cmd[6]);	
 			
@@ -302,7 +302,7 @@ public class WnodesServiceCLIImpl implements WnodesService {
 			String tomcatdir = System.getProperty("java.io.tmpdir");
 			File dir = new File(tomcatdir + "/users/" + userId);
 			String result = null;
-			String[] cmd = { "/usr/bin/wnodes/cli/delete_instance", "--locations="+uuid };
+			String[] cmd = { "/usr/bin/wnodes/cli/delete_instance", "--locations="+uuid.trim() };
 			log.error("Command {}.", cmd[0] + " " + cmd[1]);
 
 			Process p = Runtime.getRuntime().exec(cmd, null, dir);

@@ -92,7 +92,7 @@
 					$close = jQuery('<a class="' + options.closeClassName + '"></a>');
 					$close.appendTo($modal);
 
-					var overlayOpacity = _getOpacity($overlay.not('iframe')) || options.overlayOpacity;
+					var overlayOpacity = _getOpacity2($overlay.not('iframe')) || options.overlayOpacity;
 					$overlay.fadeTo(0, 0).show().not('iframe').fadeTo(_settings2.fadeInSpeed, overlayOpacity);
 					$modal.fadeIn(_settings2.fadeInSpeed);
 					
@@ -249,7 +249,6 @@
 				<portlet:param name="myaction" value="deleteMultipleVirtualMachine" />
 			</portlet:actionURL>
 	
-	
 			<form name="goToAddForm" action="${deleteUrl}" method="POST">
 	
 				<liferay-ui:search-container
@@ -271,7 +270,7 @@
 						className="it.italiangrid.wnodes.model.VirtualMachine"
 						keyProperty="uuid" modelVar="vms">
 						<liferay-ui:search-container-column-text name="Del">
-							<c:if test="${(vms.status=='ACTIVE') }">
+							<c:if test="${(fn:toUpperCase(vms.status)=='ACTIVE') }">
 								<input name="vmToDel" type="checkbox"
 									value="${vms.uuid }"
 									onchange="viewOrHideDeleteButton('${vms.uuid }');"></input>

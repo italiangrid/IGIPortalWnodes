@@ -51,7 +51,7 @@ function closeSession() {
 function create(host, user) {
 
 	GateOne.init({
-		url : "https://flyback.cnaf.infn.it:22443/",
+		url : "https://portal.italiangrid.it:22443/",
 		fontSize : '120%',
 		fillContainer : false,
 		style : {
